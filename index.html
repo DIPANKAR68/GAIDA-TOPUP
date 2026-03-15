@@ -668,8 +668,8 @@ footer{position:relative;z-index:1;
   <!-- NEW: Developer contact info -->
   <div class="fcontact-label">Developer Contact</div>
   <div class="fcontact">
-    <a href="mailto:dipankar1mandal1@gmail.com">
-      📧 dipankar1mandal1@gmail.com
+    <a href="/cdn-cgi/l/email-protection#0e6a677e6f60656f7c3f636f606a6f623f4e69636f6762206d6163">
+      📧 <span class="__cf_email__" data-cfemail="b2d6dbc2d3dcd9d3c083dfd3dcd6d3de83f2d5dfd3dbde9cd1dddf">[email&#160;protected]</span>
     </a>
   </div>
   <div class="fdiv"></div>
@@ -753,7 +753,7 @@ footer{position:relative;z-index:1;
 
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── PARTICLES ── */
 (function(){
   var c=document.getElementById('canvas'),x=c.getContext('2d');
@@ -1014,4 +1014,15 @@ function deleteOrder(id){
   if(!confirm('Delete this order request?')) return;
   var orders=JSON.parse(localStorage.getItem('gaida_orders')||'[]');
   orders=orders.filter(function(o){return o.id!==id;});
-  localStorage.set
+  localStorage.setItem('gaida_orders',JSON.stringify(orders));
+  renderOrders();
+}
+
+function clearAllOrders(){
+  if(!confirm('Clear ALL order requests? This cannot be undone.')) return;
+  localStorage.removeItem('gaida_orders');
+  renderOrders();
+}
+</script>
+</body>
+</html>
