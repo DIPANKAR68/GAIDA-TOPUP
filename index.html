@@ -6,539 +6,380 @@
 <title>GAIDA TOPUP — Fast • Cheap • Trusted</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#030712;--card:rgba(255,255,255,.04);--bdr:rgba(255,255,255,.08);
+  --bg:#030712;--bg2:#060d1a;--card:rgba(255,255,255,.05);--bdr:rgba(255,255,255,.08);
   --cyan:#00f5ff;--purple:#b400ff;--pink:#ff006e;--gold:#ffd700;--green:#00ff88;
-  --txt:#e8eaf6;--muted:#7986cb;--r:14px;--tr:.3s cubic-bezier(.4,0,.2,1)
+  --red:#ff4444;--txt:#e8eaf6;--muted:#7986cb;--r:14px;
+  --wa:#25d366;--wa2:#128c7e;
 }
-html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
-body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;min-height:100vh;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+body{font-family:'Exo 2',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;min-height:100vh}
 a{text-decoration:none;color:inherit}
-button{cursor:pointer;border:none;outline:none;background:none}
-input,textarea{outline:none;border:none;font-family:inherit;font-size:16px}
-::-webkit-scrollbar{width:5px}
+button{cursor:pointer;border:none;outline:none;background:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+input,textarea,select{outline:none;border:none;font-family:inherit;font-size:16px;-webkit-appearance:none;border-radius:0}
+::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
-
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
 #canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;
-  justify-content:space-between;padding:13px 44px;
-  background:rgba(3,7,18,.84);backdrop-filter:blur(24px);border-bottom:1px solid var(--bdr)}
-.logo{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;
-  background:linear-gradient(135deg,var(--cyan),var(--purple));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:13px 44px;background:rgba(3,7,18,.93);border-bottom:1px solid var(--bdr);backdrop-filter:blur(12px)}
+.logo{font-family:'Orbitron',sans-serif;font-size:1.3rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;flex-shrink:0}
 .logo span{-webkit-text-fill-color:var(--gold)}
 .navul{display:flex;gap:26px;list-style:none}
-.navul a{font-weight:600;font-size:.85rem;letter-spacing:1px;color:var(--muted);
-  transition:var(--tr);text-transform:uppercase}
-.navul a:hover{color:var(--cyan);text-shadow:0 0 12px var(--cyan)}
-.badge-live{display:flex;align-items:center;gap:7px;font-size:.74rem;font-weight:700;
-  color:var(--green);background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.28);
-  padding:5px 13px;border-radius:50px;letter-spacing:1px}
-.badge-live::before{content:'';width:7px;height:7px;background:var(--green);
-  border-radius:50%;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.18}}
-.hbg{display:none;flex-direction:column;gap:5px}
-.hbg span{width:24px;height:2px;background:var(--cyan);border-radius:2px;display:block}
+.navul a{font-weight:600;font-size:.85rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase;transition:color .2s}
+.navul a:hover{color:var(--cyan)}
+.badge-live{display:flex;align-items:center;gap:7px;font-size:.74rem;font-weight:700;color:var(--green);background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.28);padding:5px 13px;border-radius:50px;letter-spacing:1px}
+.badge-live::before{content:'';width:7px;height:7px;background:var(--green);border-radius:50%;animation:blink 1.5s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hbg{display:none;flex-direction:column;gap:5px;padding:4px}
+.hbg span{width:24px;height:2px;background:var(--cyan);border-radius:2px;display:block;transition:all .3s}
 
-/* HERO */
-.hero{position:relative;z-index:1;min-height:100vh;
-  display:flex;align-items:center;justify-content:center;
-  text-align:center;flex-direction:column;padding:130px 22px 80px;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%,rgba(180,0,255,.2) 0%,transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 90%,rgba(0,245,255,.12) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 30% at 10% 60%,rgba(255,0,110,.07) 0%,transparent 60%)}
-.hero-pre{display:inline-flex;align-items:center;gap:8px;
-  background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.32);
-  color:var(--gold);font-size:.76rem;font-weight:700;padding:6px 18px;
-  border-radius:50px;letter-spacing:2px;text-transform:uppercase;
-  margin-bottom:28px;animation:fd .8s both}
-@keyframes fd{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:none}}
-@keyframes fu{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
-.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5.5vw,4.8rem);
-  font-weight:900;line-height:1.1;animation:fu .9s .1s both}
-.h1a{background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--purple) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.h1b{background:linear-gradient(135deg,var(--pink),var(--gold));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  display:block;font-size:.56em;margin-top:8px}
-.hero-sub{margin:20px 0 38px;max-width:540px;font-size:1.08rem;
-  color:var(--muted);line-height:1.72;animation:fu .9s .2s both}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fu .9s .3s both}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 36px;border-radius:50px;
-  font-family:'Orbitron',sans-serif;font-size:.86rem;font-weight:700;
-  letter-spacing:1.5px;text-transform:uppercase;transition:var(--tr)}
-.btn-p{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;
-  box-shadow:0 0 28px rgba(0,245,255,.45),0 0 56px rgba(180,0,255,.22)}
-.btn-p:hover{transform:translateY(-3px) scale(1.03);
-  box-shadow:0 0 46px rgba(0,245,255,.72),0 0 88px rgba(180,0,255,.42)}
-.btn-o{background:transparent;color:var(--cyan);border:1.5px solid var(--cyan);
-  box-shadow:0 0 14px rgba(0,245,255,.2)}
-.btn-o:hover{background:rgba(0,245,255,.08);transform:translateY(-3px);
-  box-shadow:0 0 28px rgba(0,245,255,.48)}
-.stats{display:flex;gap:36px;margin-top:56px;flex-wrap:wrap;justify-content:center;animation:fu .9s .4s both}
-.stat-n{font-family:'Orbitron',sans-serif;font-size:1.85rem;font-weight:900;
-  background:linear-gradient(135deg,var(--cyan),var(--purple));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+/* ── HERO ── */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:130px 22px 80px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(180,0,255,.18) 0%,transparent 70%),radial-gradient(ellipse 60% 40% at 80% 90%,rgba(0,245,255,.1) 0%,transparent 60%)}
+@keyframes fu{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(2rem,5.5vw,4.8rem);font-weight:900;line-height:1.1;animation:fu .8s .1s both}
+.h1a{background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h1b{background:linear-gradient(135deg,var(--pink),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;font-size:.55em;margin-top:8px}
+.hero-sub{margin:20px 0 36px;max-width:540px;font-size:1.05rem;color:var(--muted);line-height:1.7;animation:fu .8s .2s both}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fu .8s .3s both}
+.stats{display:flex;gap:36px;margin-top:52px;flex-wrap:wrap;justify-content:center;animation:fu .8s .4s both}
+.stat-n{font-family:'Orbitron',sans-serif;font-size:1.85rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .stat-l{font-size:.75rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
-.games-row{display:flex;gap:13px;margin-top:42px;flex-wrap:wrap;justify-content:center;animation:fu .9s .5s both}
-.game-pill{display:flex;align-items:center;gap:7px;background:var(--card);
-  border:1px solid var(--bdr);backdrop-filter:blur(12px);
-  padding:8px 16px;border-radius:50px;font-size:.83rem;font-weight:700;transition:var(--tr)}
-.game-pill:hover{border-color:var(--cyan);box-shadow:0 0 18px rgba(0,245,255,.3);transform:translateY(-2px)}
+.games-row{display:flex;gap:12px;margin-top:40px;flex-wrap:wrap;justify-content:center;animation:fu .8s .5s both}
+.game-pill{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--bdr);padding:8px 16px;border-radius:50px;font-size:.82rem;font-weight:700;transition:border-color .2s,box-shadow .2s;cursor:pointer}
+.game-pill:hover{border-color:var(--cyan);box-shadow:0 0 14px rgba(0,245,255,.25)}
 
-/* PROMO */
-.promo{position:relative;z-index:1;padding:26px 20px;text-align:center;
-  background:linear-gradient(135deg,rgba(180,0,255,.1),rgba(0,245,255,.06));
-  border-top:1px solid rgba(180,0,255,.2);border-bottom:1px solid rgba(0,245,255,.2)}
-.promo-tag{display:inline-block;background:linear-gradient(135deg,var(--purple),var(--pink));
-  color:#fff;font-size:.7rem;font-weight:800;padding:3px 12px;border-radius:4px;
-  letter-spacing:2px;text-transform:uppercase;margin-bottom:11px}
-.promo-txt{font-size:1.02rem;color:var(--muted);line-height:1.82;max-width:700px;margin:0 auto}
-.promo-txt strong{color:var(--cyan)}
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 34px;border-radius:50px;font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;transition:transform .18s ease,box-shadow .18s ease}
+.btn-p{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;box-shadow:0 0 24px rgba(0,245,255,.4),0 0 48px rgba(180,0,255,.18)}
+.btn-p:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 0 38px rgba(0,245,255,.6),0 0 70px rgba(180,0,255,.32)}
+.btn-p:active{transform:scale(.97)}
+.btn-o{background:transparent;color:var(--cyan);border:1.5px solid var(--cyan);box-shadow:0 0 12px rgba(0,245,255,.18)}
+.btn-o:hover{background:rgba(0,245,255,.08);transform:translateY(-2px);box-shadow:0 0 24px rgba(0,245,255,.4)}
+.btn-o:active{transform:scale(.97)}
+.btn-wa-main{background:linear-gradient(135deg,var(--wa),var(--wa2));color:#fff;box-shadow:0 0 24px rgba(37,211,102,.35)}
+.btn-wa-main:hover{transform:translateY(-2px);box-shadow:0 0 38px rgba(37,211,102,.55)}
 
-/* SECTIONS */
-.sec{position:relative;z-index:1;padding:80px 20px}
-.sec-h{text-align:center;margin-bottom:50px}
-.eyebrow{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:3px;
-  text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
-.sec-t{font-family:'Orbitron',sans-serif;font-size:clamp(1.7rem,4vw,2.65rem);font-weight:900;
-  background:linear-gradient(135deg,#fff,var(--muted));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
-.sec-d{color:var(--muted);font-size:.97rem;max-width:480px;margin:0 auto}
-.divider{width:58px;height:3px;margin:14px auto 0;
-  background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:2px}
-.glow-line{width:100%;height:1px;position:relative;z-index:1;
-  background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:.3}
+/* ── SECTIONS ── */
+.sec{position:relative;z-index:1;padding:78px 20px}
+.sec-h{text-align:center;margin-bottom:48px}
+.eyebrow{display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.sec-t{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;background:linear-gradient(135deg,#fff,var(--muted));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.sec-d{color:var(--muted);font-size:.95rem;max-width:480px;margin:0 auto}
+.divider{width:56px;height:3px;margin:13px auto 0;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:2px}
+.glow-line{width:100%;height:1px;position:relative;z-index:1;background:linear-gradient(90deg,transparent,var(--cyan),var(--purple),transparent);opacity:.28}
 
-/* HOW IT WORKS */
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:22px;max-width:960px;margin:0 auto}
-.step{background:var(--card);border:1px solid var(--bdr);backdrop-filter:blur(20px);
-  border-radius:var(--r);padding:28px 22px;text-align:center;
-  transition:var(--tr);position:relative;overflow:hidden}
-.step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,var(--cyan),var(--purple));
-  transform:scaleX(0);transition:var(--tr)}
-.step:hover{transform:translateY(-6px);border-color:rgba(0,245,255,.32)}
+/* ── HOW IT WORKS ── */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:960px;margin:0 auto}
+.step{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:28px 22px;text-align:center;position:relative;overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));transform:scaleX(0);transition:transform .22s ease}
+.step:hover{transform:translateY(-5px);border-color:rgba(0,245,255,.3);box-shadow:0 8px 28px rgba(0,245,255,.1)}
 .step:hover::after{transform:scaleX(1)}
-.step-num{width:50px;height:50px;border-radius:50%;
-  background:linear-gradient(135deg,rgba(0,245,255,.14),rgba(180,0,255,.14));
-  border:1px solid rgba(0,245,255,.3);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Orbitron',sans-serif;font-size:1.12rem;font-weight:900;
-  color:var(--cyan);margin:0 auto 13px}
-.step-ico{font-size:1.7rem;margin-bottom:10px}
-.step-ti{font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:7px}
-.step-de{font-size:.86rem;color:var(--muted);line-height:1.6}
+.step-num{width:48px;height:48px;border-radius:50%;background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.28);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;color:var(--cyan);margin:0 auto 13px}
+.step-ico{font-size:1.65rem;margin-bottom:10px}
+.step-ti{font-family:'Orbitron',sans-serif;font-size:.88rem;font-weight:700;margin-bottom:7px}
+.step-de{font-size:.85rem;color:var(--muted);line-height:1.6}
 
-/* TABS */
-.tabs{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-bottom:38px}
-.tab{display:flex;align-items:center;gap:7px;padding:9px 20px;border-radius:50px;
-  background:var(--card);border:1px solid var(--bdr);color:var(--muted);
-  font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.92rem;
-  letter-spacing:.5px;transition:var(--tr);backdrop-filter:blur(12px)}
-.tab.on,.tab:hover{border-color:var(--cyan);color:var(--cyan);
-  box-shadow:0 0 18px rgba(0,245,255,.2);background:rgba(0,245,255,.06)}
-.panel{display:none;animation:fu .4s ease}
-.panel.on{display:block}
+/* ── TABS ── */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:36px}
+.tab{display:flex;align-items:center;gap:7px;padding:9px 20px;border-radius:50px;background:var(--card);border:1px solid var(--bdr);color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.92rem;letter-spacing:.5px;touch-action:manipulation;transition:border-color .18s,color .18s,background .18s,box-shadow .18s}
+.tab.on,.tab:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,245,255,.06);box-shadow:0 0 14px rgba(0,245,255,.18)}
+.tab:active{transform:scale(.96)}
+.panel{display:none}
+.panel.on{display:block;animation:fu .3s ease}
 
-/* PACK CARDS */
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));
-  gap:15px;max-width:1100px;margin:0 auto 32px}
-.pcard{background:var(--card);border:1px solid var(--bdr);backdrop-filter:blur(20px);
-  border-radius:var(--r);padding:22px 15px;text-align:center;cursor:pointer;
-  transition:var(--tr);position:relative;overflow:hidden}
-.pcard:hover{transform:translateY(-6px) scale(1.03);border-color:var(--cyan);
-  box-shadow:0 12px 40px rgba(0,245,255,.22)}
-.pico{font-size:2rem;margin-bottom:9px}
-.pname{font-weight:700;font-size:.97rem;margin-bottom:5px;color:#fff}
-.pprice{font-family:'Orbitron',sans-serif;font-size:.88rem;font-weight:700;color:var(--gold)}
-.hot{position:absolute;top:9px;right:9px;
-  background:linear-gradient(135deg,var(--pink),#ff4500);
-  color:#fff;font-size:.59rem;font-weight:800;
-  padding:3px 7px;border-radius:4px;letter-spacing:1.5px;text-transform:uppercase;
-  animation:hp 2s infinite}
-@keyframes hp{0%,100%{box-shadow:0 0 6px rgba(255,0,110,.6)}
-  50%{box-shadow:0 0 18px rgba(255,0,110,1),0 0 32px rgba(255,69,0,.5)}}
+/* ── PACK CARDS ── */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;max-width:1100px;margin:0 auto 30px}
+.pcard{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:22px 14px 18px;text-align:center;cursor:pointer;position:relative;overflow:hidden;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.pcard::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,245,255,.04),rgba(180,0,255,.04));opacity:0;transition:opacity .2s}
+.pcard:hover{transform:translateY(-5px) scale(1.02);border-color:var(--cyan);box-shadow:0 8px 32px rgba(0,245,255,.2),0 0 0 1px rgba(0,245,255,.1)}
+.pcard:hover::before{opacity:1}
+.pcard:active{transform:scale(.97)}
+.pico{font-size:2rem;margin-bottom:9px;display:block;filter:drop-shadow(0 0 8px rgba(0,245,255,.4))}
+.pname{font-weight:700;font-size:.95rem;margin-bottom:6px;color:#fff}
+.pprice{font-family:'Orbitron',sans-serif;font-size:.88rem;font-weight:700;color:var(--gold);display:block;margin-bottom:10px}
+.pcard-cta{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;font-weight:700;color:var(--wa);letter-spacing:.5px;opacity:.8;transition:opacity .18s}
+.pcard:hover .pcard-cta{opacity:1}
+/* HOT tags */
+.hot{position:absolute;top:8px;right:8px;font-size:.58rem;font-weight:800;padding:3px 7px;border-radius:4px;letter-spacing:1.5px;text-transform:uppercase}
+.hot-fire{background:linear-gradient(135deg,#ff4500,var(--pink));color:#fff;animation:hotpulse 2.5s ease-in-out infinite}
+.hot-star{background:linear-gradient(135deg,var(--gold),#ff8c00);color:#000;animation:hotpulse 2.8s ease-in-out infinite}
+.hot-new{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;animation:hotpulse 3s ease-in-out infinite}
+.hot-best{background:linear-gradient(135deg,var(--green),#00b360);color:#000;animation:hotpulse 2.3s ease-in-out infinite}
+@keyframes hotpulse{0%,100%{opacity:1}50%{opacity:.6}}
 
-/* CHAT / REVIEWS */
+/* ── PAYMENT BADGE ── */
+.payment-strip{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:34px;max-width:700px;margin-left:auto;margin-right:auto}
+.pay-badge{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:50px;padding:8px 18px;font-size:.82rem;font-weight:600;color:var(--muted)}
+.pay-badge strong{color:var(--txt)}
+
+/* ── MODAL OVERLAY ── */
+.modal-ov{position:fixed;inset:0;z-index:1000;background:rgba(3,7,18,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.modal-ov.on{opacity:1;pointer-events:all}
+
+/* ── ORDER MODAL ── */
+.modal-box{background:linear-gradient(145deg,#0a1628,#070e1c);border:1px solid rgba(0,245,255,.25);border-radius:20px;padding:0;width:100%;max-width:500px;position:relative;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;transform:translateY(24px) scale(.96);transition:transform .28s cubic-bezier(.34,1.15,.64,1);box-shadow:0 0 60px rgba(0,245,255,.1),0 0 0 1px rgba(0,245,255,.05)}
+.modal-ov.on .modal-box{transform:translateY(0) scale(1)}
+.modal-header{background:linear-gradient(135deg,rgba(0,245,255,.08),rgba(180,0,255,.08));border-bottom:1px solid rgba(0,245,255,.12);padding:20px 22px 16px;flex-shrink:0;position:relative}
+.modal-header-glow{position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:200px;height:60px;background:radial-gradient(ellipse,rgba(0,245,255,.2),transparent 70%);pointer-events:none}
+.modal-x{position:absolute;top:14px;right:16px;color:var(--muted);font-size:1.4rem;line-height:1;transition:color .18s,transform .18s;padding:4px;z-index:1}
+.modal-x:hover{color:var(--pink);transform:rotate(90deg)}
+.modal-game-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.2);padding:4px 12px;border-radius:50px;font-size:.72rem;font-weight:700;color:var(--cyan);letter-spacing:1px;margin-bottom:9px}
+.modal-ti{font-family:'Orbitron',sans-serif;font-size:1.05rem;font-weight:900;color:#fff;margin-bottom:3px;line-height:1.2}
+.modal-su{font-size:.82rem;color:var(--muted)}
+.modal-pi{display:flex;justify-content:space-between;align-items:center;background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.15);border-radius:10px;padding:10px 14px;margin-top:12px;gap:8px;flex-wrap:wrap}
+.modal-pn{font-weight:700;font-size:.9rem;color:#fff}
+.modal-pp{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:900;font-size:.95rem}
+.modal-body{overflow-y:auto;padding:20px 22px 24px;flex:1;-webkit-overflow-scrolling:touch}
+.modal-body::-webkit-scrollbar{width:3px}
+.modal-body::-webkit-scrollbar-thumb{background:rgba(0,245,255,.3);border-radius:2px}
+
+/* ── WARNING BOX ── */
+.warn-box{display:flex;gap:10px;align-items:flex-start;background:rgba(255,68,68,.06);border:1px solid rgba(255,68,68,.22);border-radius:10px;padding:11px 13px;margin-bottom:18px}
+.warn-ico{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.warn-txt{font-size:.78rem;color:#ff9999;line-height:1.55}
+.warn-txt strong{color:var(--red);display:block;margin-bottom:2px;font-size:.8rem}
+
+/* ── FORM ── */
+.fg{margin-bottom:13px}
+.fg label{display:flex;align-items:center;gap:5px;font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:5px;letter-spacing:.5px;text-transform:uppercase}
+.fg label .lico{font-size:.95rem}
+.fg input,.fg textarea{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:10px;color:var(--txt);font-family:'Exo 2',sans-serif;font-size:.95rem;padding:11px 13px;transition:border-color .2s,box-shadow .2s,background .2s}
+.fg textarea{resize:vertical;min-height:72px;max-height:120px}
+.fg input:focus,.fg textarea:focus{border-color:var(--cyan);box-shadow:0 0 12px rgba(0,245,255,.15);background:rgba(0,245,255,.03)}
+.fg input[readonly]{opacity:.55;cursor:default;background:rgba(255,255,255,.02)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.field-hint{font-size:.7rem;color:var(--muted);margin-top:4px;display:block;opacity:.8}
+
+/* ── SUBMIT BUTTON ── */
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--wa),var(--wa2));color:#fff;font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;padding:14px;border-radius:12px;letter-spacing:.8px;transition:transform .18s,box-shadow .18s,opacity .18s;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:9px;position:relative;overflow:hidden}
+.btn-submit::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1),transparent);opacity:0;transition:opacity .18s}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 0 26px rgba(37,211,102,.45)}
+.btn-submit:hover::before{opacity:1}
+.btn-submit:active{transform:scale(.97)}
+.btn-submit:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-submit .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;flex-shrink:0}
+.btn-submit.loading .btn-txt{display:none}
+.btn-submit.loading .spinner{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:26px;right:26px;z-index:9999;background:linear-gradient(135deg,#081c12,#061410);border:1px solid rgba(0,255,136,.35);border-radius:14px;padding:16px 18px;display:flex;align-items:flex-start;gap:12px;box-shadow:0 0 28px rgba(0,255,136,.25),0 8px 32px rgba(0,0,0,.4);transform:translateX(140%);transition:transform .36s cubic-bezier(.34,1.2,.64,1);max-width:320px}
+.toast.on{transform:translateX(0)}
+.toast.error{background:linear-gradient(135deg,#1c0808,#140606);border-color:rgba(255,68,68,.35);box-shadow:0 0 28px rgba(255,68,68,.2)}
+.toast-ico{font-size:1.5rem;flex-shrink:0;margin-top:1px}
+.toast-msg{font-weight:700;font-size:.93rem;color:#fff;margin-bottom:2px}
+.toast-sub{font-size:.76rem;color:var(--muted);line-height:1.5}
+
+/* ── FLOATING BUTTONS ── */
+.floats{position:fixed;bottom:26px;left:26px;z-index:500;display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.float-wa{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--wa),var(--wa2));color:#fff;height:52px;border-radius:50px;padding:0 20px 0 16px;box-shadow:0 0 24px rgba(37,211,102,.4),0 4px 16px rgba(0,0,0,.3);transition:transform .2s,box-shadow .2s;text-decoration:none;font-weight:700;font-size:.82rem;letter-spacing:.5px;white-space:nowrap;animation:wa-pulse 3s ease-in-out infinite}
+.float-wa:hover{transform:scale(1.05) translateY(-2px);box-shadow:0 0 36px rgba(37,211,102,.6)}
+.float-wa:active{transform:scale(.95)}
+.float-wa-ico{font-size:1.3rem;flex-shrink:0}
+@keyframes wa-pulse{0%,100%{box-shadow:0 0 24px rgba(37,211,102,.4),0 4px 16px rgba(0,0,0,.3)}50%{box-shadow:0 0 36px rgba(37,211,102,.6),0 4px 20px rgba(0,0,0,.3)}}
+
+/* ── REVIEWS CHAT ── */
 .ccon{max-width:760px;margin:0 auto}
-.cinput{background:var(--card);border:1px solid var(--bdr);backdrop-filter:blur(20px);
-  border-radius:var(--r);padding:22px;margin-bottom:26px}
-.crow1{display:flex;gap:11px;margin-bottom:11px}
-.crow1 input{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--bdr);
-  border-radius:8px;color:var(--txt);font-family:'Rajdhani',sans-serif;
-  font-size:.93rem;padding:9px 13px;transition:var(--tr)}
-.crow1 input:focus{border-color:var(--cyan);box-shadow:0 0 12px rgba(0,245,255,.15)}
-.crow2{display:flex;gap:11px;align-items:flex-end}
-.crow2 textarea{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--bdr);
-  border-radius:8px;color:var(--txt);font-family:'Rajdhani',sans-serif;
-  font-size:.93rem;padding:9px 13px;resize:none;min-height:58px;transition:var(--tr)}
-.crow2 textarea:focus{border-color:var(--cyan);box-shadow:0 0 12px rgba(0,245,255,.15)}
-.btn-send{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;
-  font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;
-  padding:11px 20px;border-radius:8px;transition:var(--tr);white-space:nowrap}
-.btn-send:hover{transform:translateY(-2px);box-shadow:0 0 22px rgba(0,245,255,.45)}
-.cboard{display:flex;flex-direction:column;gap:13px}
-.cmsg{background:var(--card);border:1px solid var(--bdr);backdrop-filter:blur(20px);
-  border-radius:12px;padding:15px 19px;animation:fu .4s ease}
-.cmsg-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
-.cmsg-name{font-weight:700;color:var(--cyan);font-size:.92rem}
-.cmsg-time{font-size:.73rem;color:var(--muted)}
-.cmsg-body{color:var(--txt);font-size:.93rem;line-height:1.6}
+.cinput{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:20px;margin-bottom:24px}
+.crow1 input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-family:'Exo 2',sans-serif;font-size:1rem;padding:9px 13px;transition:border-color .18s,box-shadow .18s;margin-bottom:10px}
+.crow1 input:focus{border-color:var(--cyan);box-shadow:0 0 10px rgba(0,245,255,.13)}
+.crow2{display:flex;gap:10px;align-items:flex-end}
+.crow2 textarea{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-family:'Exo 2',sans-serif;font-size:1rem;padding:9px 13px;resize:none;min-height:56px;transition:border-color .18s}
+.crow2 textarea:focus{border-color:var(--cyan)}
+.btn-send{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#000;font-family:'Orbitron',sans-serif;font-size:.74rem;font-weight:700;padding:11px 18px;border-radius:8px;white-space:nowrap;transition:transform .18s,box-shadow .18s;flex-shrink:0}
+.btn-send:hover{transform:translateY(-1px);box-shadow:0 0 18px rgba(0,245,255,.4)}
+.cboard{display:flex;flex-direction:column;gap:12px}
+.cmsg{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:14px 18px;animation:fu .3s ease}
+.cmsg-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;flex-wrap:wrap;gap:6px}
+.cmsg-name{font-weight:700;color:var(--cyan);font-size:.9rem}
+.cmsg-time{font-size:.72rem;color:var(--muted)}
+.cmsg-body{color:var(--txt);font-size:.92rem;line-height:1.6;word-break:break-word}
 .no-msg{text-align:center;color:var(--muted);padding:36px;font-size:.92rem}
 
-/* MODAL */
-.modal-ov{position:fixed;inset:0;z-index:1000;background:rgba(3,7,18,.9);
-  backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;
-  padding:20px;opacity:0;pointer-events:none;transition:var(--tr)}
-.modal-ov.on{opacity:1;pointer-events:all}
-.modal-box{background:linear-gradient(145deg,#0d1226,#0a0f1e);
-  border:1px solid rgba(0,245,255,.26);border-radius:18px;padding:34px;
-  width:100%;max-width:500px;position:relative;
-  transform:scale(.92) translateY(20px);transition:var(--tr);
-  box-shadow:0 0 60px rgba(0,245,255,.12),0 0 120px rgba(180,0,255,.08);
-  max-height:90vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
-.modal-ov.on .modal-box{transform:scale(1) translateY(0)}
-.modal-x{position:absolute;top:15px;right:18px;color:var(--muted);font-size:1.55rem;transition:var(--tr)}
-.modal-x:hover{color:var(--pink)}
-.modal-ti{font-family:'Orbitron',sans-serif;font-size:1.08rem;margin-bottom:5px;color:var(--cyan)}
-.modal-su{font-size:.88rem;color:var(--muted);margin-bottom:22px}
-.modal-pi{background:rgba(0,245,255,.05);border:1px solid rgba(0,245,255,.16);
-  border-radius:10px;padding:11px 15px;margin-bottom:18px;
-  display:flex;justify-content:space-between;align-items:center}
-.modal-pn{font-weight:700;font-size:.95rem}
-.modal-pp{font-family:'Orbitron',sans-serif;color:var(--gold);font-weight:700}
-.fg{margin-bottom:13px}
-.fg label{display:block;font-size:.79rem;font-weight:600;color:var(--muted);
-  margin-bottom:5px;letter-spacing:.5px}
-.fg input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bdr);
-  border-radius:8px;color:var(--txt);font-family:'Rajdhani',sans-serif;
-  font-size:.93rem;padding:9px 13px;transition:var(--tr)}
-.fg input:focus{border-color:var(--cyan);box-shadow:0 0 13px rgba(0,245,255,.15)}
-
-/* TOAST */
-.toast{position:fixed;bottom:28px;right:28px;z-index:9999;
-  background:linear-gradient(135deg,#0d1226,#151d3a);
-  border:1px solid var(--green);border-radius:12px;padding:15px 20px;
-  display:flex;align-items:center;gap:12px;
-  box-shadow:0 0 30px rgba(0,255,136,.25);
-  transform:translateX(130%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);max-width:310px}
-.toast.on{transform:translateX(0)}
-.toast-ico{font-size:1.45rem}
-.toast-msg{font-weight:700;font-size:.93rem}
-.toast-sub{font-size:.77rem;color:var(--muted);margin-top:2px}
-
-/* FLOAT */
-.float-btn{position:fixed;bottom:28px;left:28px;z-index:500;
-  background:linear-gradient(135deg,#25d366,#128c7e);
-  color:#fff;width:54px;height:54px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:1.45rem;
-  box-shadow:0 0 22px rgba(37,211,102,.4);transition:var(--tr)}
-.float-btn:hover{transform:scale(1.15);box-shadow:0 0 38px rgba(37,211,102,.65)}
-.float-lbl{position:absolute;left:66px;background:#25d366;color:#fff;
-  padding:4px 12px;border-radius:20px;font-size:.76rem;font-weight:700;
-  white-space:nowrap;opacity:0;transform:translateX(-10px);transition:var(--tr);pointer-events:none}
-.float-btn:hover .float-lbl{opacity:1;transform:none}
-
-/* FOOTER */
-footer{position:relative;z-index:1;
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.6));
-  border-top:1px solid var(--bdr);padding:48px 20px 28px;text-align:center}
-.flogo{font-family:'Orbitron',sans-serif;font-size:1.45rem;font-weight:900;
-  background:linear-gradient(135deg,var(--cyan),var(--purple));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:11px}
-.ftag{color:var(--muted);font-size:.88rem;margin-bottom:26px}
-.flinks{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
-.flinks a{color:var(--muted);font-size:.86rem;font-weight:600;letter-spacing:.5px;transition:var(--tr)}
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;background:linear-gradient(180deg,transparent,rgba(0,0,0,.5));border-top:1px solid var(--bdr);padding:46px 20px 26px;text-align:center}
+.flogo{font-family:'Orbitron',sans-serif;font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.ftag{color:var(--muted);font-size:.87rem;margin-bottom:24px}
+.flinks{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.flinks a{color:var(--muted);font-size:.85rem;font-weight:600;letter-spacing:.5px;transition:color .18s}
 .flinks a:hover{color:var(--cyan)}
-/* NEW: developer contact row in footer */
-.fcontact{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;align-items:center}
-.fcontact a{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;
-  color:var(--muted);transition:var(--tr)}
+.fcontact-label{font-size:.7rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.fcontact{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.fcontact a{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:var(--muted);transition:color .18s}
 .fcontact a:hover{color:var(--cyan)}
-.fcontact-label{font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;
-  margin-bottom:6px}
-.fdiv{width:100%;height:1px;background:var(--bdr);margin:18px 0}
-.fcred{color:var(--muted);font-size:.8rem}
-.fcred a{color:var(--cyan);font-weight:700}
-.fcred a:hover{text-shadow:0 0 12px var(--cyan)}
-.fbadge{display:inline-flex;align-items:center;gap:6px;
-  background:rgba(255,165,0,.08);border:1px solid rgba(255,165,0,.3);
-  color:orange;font-size:.7rem;font-weight:700;
-  padding:4px 13px;border-radius:50px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px}
-
-/* ── ADMIN PANEL STYLES (NEW) ── */
-.admin-ov{position:fixed;inset:0;z-index:2000;background:rgba(3,7,18,.97);
-  backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;
-  padding:20px;opacity:0;pointer-events:none;transition:var(--tr)}
-.admin-ov.on{opacity:1;pointer-events:all}
-
-/* Login box */
-.admin-login{background:linear-gradient(145deg,#0d1226,#080e1c);
-  border:1px solid rgba(180,0,255,.35);border-radius:18px;padding:40px 36px;
-  width:100%;max-width:380px;text-align:center;
-  box-shadow:0 0 60px rgba(180,0,255,.18),0 0 120px rgba(0,245,255,.06)}
-.admin-login-icon{font-size:2.8rem;margin-bottom:14px}
-.admin-login-ti{font-family:'Orbitron',sans-serif;font-size:1.2rem;font-weight:900;
-  color:var(--purple);margin-bottom:6px;letter-spacing:1px}
-.admin-login-sub{font-size:.85rem;color:var(--muted);margin-bottom:26px}
-.admin-login input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bdr);
-  border-radius:10px;color:var(--txt);font-family:'Rajdhani',sans-serif;
-  font-size:1rem;padding:11px 16px;transition:var(--tr);margin-bottom:14px}
-.admin-login input:focus{border-color:var(--purple);box-shadow:0 0 14px rgba(180,0,255,.2)}
-.btn-admin-login{width:100%;background:linear-gradient(135deg,var(--purple),var(--pink));
-  color:#fff;font-family:'Orbitron',sans-serif;font-size:.85rem;font-weight:700;
-  padding:13px;border-radius:10px;letter-spacing:1px;transition:var(--tr)}
-.btn-admin-login:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(180,0,255,.5)}
-.admin-login-err{color:var(--pink);font-size:.82rem;margin-top:10px;display:none}
-
-/* Admin dashboard */
-.admin-dash{background:linear-gradient(145deg,#07101f,#080e1c);
-  border:1px solid rgba(0,245,255,.2);border-radius:18px;
-  width:100%;max-width:900px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;
-  box-shadow:0 0 60px rgba(0,245,255,.1),0 0 120px rgba(180,0,255,.07)}
-.admin-dash-header{display:flex;align-items:center;justify-content:space-between;
-  padding:20px 26px;border-bottom:1px solid var(--bdr);flex-shrink:0}
-.admin-dash-title{font-family:'Orbitron',sans-serif;font-size:1.05rem;font-weight:900;
-  color:var(--cyan);display:flex;align-items:center;gap:10px}
-.admin-dash-title span{font-size:1.2rem}
-.admin-dash-actions{display:flex;gap:10px;align-items:center}
-.admin-count-badge{background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.25);
-  color:var(--cyan);font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:50px;
-  letter-spacing:1px}
-.btn-admin-clear{background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.3);
-  color:#ff4444;font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:700;
-  padding:6px 14px;border-radius:8px;letter-spacing:.5px;transition:var(--tr)}
-.btn-admin-clear:hover{background:rgba(255,68,68,.2);box-shadow:0 0 14px rgba(255,68,68,.3)}
-.btn-admin-close{color:var(--muted);font-size:1.5rem;transition:var(--tr);line-height:1}
-.btn-admin-close:hover{color:var(--pink)}
-.admin-dash-body{overflow-y:auto;padding:20px 26px;flex:1;-webkit-overflow-scrolling:touch}
-.admin-dash-body::-webkit-scrollbar{width:4px}
-.admin-dash-body::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
-
-/* Order cards in admin */
-.order-empty{text-align:center;padding:50px 20px;color:var(--muted)}
-.order-empty-ico{font-size:3rem;margin-bottom:14px}
-.order-empty-txt{font-size:.95rem}
-.order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:14px}
-.order-card{background:rgba(255,255,255,.03);border:1px solid var(--bdr);
-  border-radius:12px;padding:18px 20px;position:relative;transition:var(--tr)}
-.order-card:hover{border-color:rgba(0,245,255,.3);box-shadow:0 4px 24px rgba(0,245,255,.08)}
-.order-card-num{position:absolute;top:14px;right:16px;
-  font-family:'Orbitron',sans-serif;font-size:.7rem;color:var(--muted);font-weight:700}
-.order-card-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.order-avatar{width:38px;height:38px;border-radius:50%;
-  background:linear-gradient(135deg,var(--cyan),var(--purple));
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Orbitron',sans-serif;font-size:.95rem;font-weight:900;color:#000;flex-shrink:0}
-.order-name{font-weight:700;font-size:1rem;color:#fff}
-.order-time{font-size:.72rem;color:var(--muted)}
-.order-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:.88rem}
-.order-label{color:var(--muted);font-size:.74rem;font-weight:600;letter-spacing:.5px;
-  text-transform:uppercase;min-width:80px}
-.order-val{color:var(--txt);font-weight:600}
-.order-val.wa{color:var(--green)}
-.order-val.price{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:.85rem;font-weight:700}
-.order-val.game{color:var(--cyan)}
-.order-card-actions{display:flex;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--bdr)}
-.btn-wa{display:inline-flex;align-items:center;gap:6px;
-  background:linear-gradient(135deg,#25d366,#128c7e);
-  color:#fff;font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:700;
-  padding:7px 14px;border-radius:8px;letter-spacing:.5px;transition:var(--tr)}
-.btn-wa:hover{transform:translateY(-1px);box-shadow:0 0 16px rgba(37,211,102,.4)}
-.btn-del-order{display:inline-flex;align-items:center;gap:5px;
-  background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.25);
-  color:#ff4444;font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:700;
-  padding:7px 12px;border-radius:8px;letter-spacing:.5px;transition:var(--tr)}
-.btn-del-order:hover{background:rgba(255,68,68,.18)}
-.order-status{display:inline-flex;align-items:center;gap:5px;
-  font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:50px;letter-spacing:1px;
-  text-transform:uppercase;margin-left:auto}
-.status-new{background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.25);color:var(--cyan)}
-.status-done{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.25);color:var(--green)}
-
-/* Admin trigger link (hidden, in footer) */
-.admin-trigger{font-size:.72rem;color:rgba(255,255,255,.15);transition:var(--tr);cursor:pointer;
-  user-select:none;letter-spacing:.5px}
+.fdiv{width:100%;height:1px;background:var(--bdr);margin:16px 0}
+.fcred{color:var(--muted);font-size:.78rem;line-height:1.7}
+.admin-trigger{font-size:.7rem;color:rgba(255,255,255,.12);cursor:pointer;user-select:none;letter-spacing:.5px;transition:color .2s;margin-top:12px;display:inline-block}
 .admin-trigger:hover{color:var(--purple)}
 
+/* ── ADMIN ── */
+.admin-ov{position:fixed;inset:0;z-index:2000;background:rgba(3,7,18,.94);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.admin-ov.on{opacity:1;pointer-events:all}
+.admin-login{background:#0c1220;border:1px solid rgba(180,0,255,.3);border-radius:18px;padding:38px 32px;width:100%;max-width:360px;text-align:center;box-shadow:0 0 40px rgba(180,0,255,.12)}
+.admin-login-icon{font-size:2.6rem;margin-bottom:12px}
+.admin-login-ti{font-family:'Orbitron',sans-serif;font-size:1.1rem;font-weight:900;color:var(--purple);margin-bottom:5px}
+.admin-login-sub{font-size:.83rem;color:var(--muted);margin-bottom:22px;line-height:1.5}
+.admin-login input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:10px;color:var(--txt);font-family:'Exo 2',sans-serif;font-size:1rem;padding:11px 14px;margin-bottom:13px;transition:border-color .18s}
+.admin-login input:focus{border-color:var(--purple)}
+.btn-admin-login{width:100%;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-family:'Orbitron',sans-serif;font-size:.83rem;font-weight:700;padding:13px;border-radius:10px;letter-spacing:.8px;transition:transform .18s,box-shadow .18s}
+.btn-admin-login:hover{transform:translateY(-1px);box-shadow:0 0 20px rgba(180,0,255,.45)}
+.admin-login-err{color:var(--pink);font-size:.8rem;margin-top:10px;display:none}
+.admin-cancel{margin-top:14px;color:var(--muted);font-size:.82rem;display:block;width:100%;text-align:center;transition:color .18s}
+.admin-cancel:hover{color:var(--txt)}
+.admin-dash{background:#07101e;border:1px solid rgba(0,245,255,.18);border-radius:18px;width:100%;max-width:880px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.admin-dash-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--bdr);flex-shrink:0;flex-wrap:wrap;gap:10px}
+.admin-dash-title{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:900;color:var(--cyan);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.admin-count-badge{background:rgba(0,245,255,.1);border:1px solid rgba(0,245,255,.22);color:var(--cyan);font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:50px;letter-spacing:1px}
+.admin-dash-actions{display:flex;gap:8px;align-items:center}
+.btn-admin-export{background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.22);color:var(--cyan);font-family:'Orbitron',sans-serif;font-size:.67rem;font-weight:700;padding:6px 12px;border-radius:8px;transition:background .18s}
+.btn-admin-export:hover{background:rgba(0,245,255,.16)}
+.btn-admin-clear{background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.25);color:var(--red);font-family:'Orbitron',sans-serif;font-size:.67rem;font-weight:700;padding:6px 12px;border-radius:8px;transition:background .18s}
+.btn-admin-clear:hover{background:rgba(255,68,68,.18)}
+.btn-admin-close{color:var(--muted);font-size:1.5rem;line-height:1;transition:color .18s;padding:2px 6px}
+.btn-admin-close:hover{color:var(--pink)}
+.admin-filter-bar{display:flex;gap:7px;padding:12px 24px;border-bottom:1px solid var(--bdr);flex-shrink:0;flex-wrap:wrap}
+.afilter{background:var(--card);border:1px solid var(--bdr);color:var(--muted);font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.82rem;padding:6px 15px;border-radius:50px;transition:border-color .18s,color .18s,background .18s}
+.afilter.on,.afilter:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,245,255,.07)}
+.admin-info-bar{display:flex;align-items:flex-start;gap:8px;background:rgba(0,245,255,.04);border-bottom:1px solid rgba(0,245,255,.12);padding:10px 20px;font-size:.78rem;color:#7ecfff;line-height:1.5;flex-shrink:0}
+.admin-info-bar strong{color:var(--cyan)}
+.admin-info-close{margin-left:auto;color:var(--muted);font-size:.95rem;flex-shrink:0;background:none;border:none;cursor:pointer;padding:2px 4px}
+.admin-dash-body{overflow-y:auto;padding:18px 22px;flex:1;-webkit-overflow-scrolling:touch}
+.admin-dash-body::-webkit-scrollbar{width:3px}
+.admin-dash-body::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
+.order-empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.order-empty-ico{font-size:2.8rem;margin-bottom:12px}
+.order-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:13px}
+.order-card{background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:12px;padding:16px 18px;position:relative}
+.order-card:hover{border-color:rgba(0,245,255,.25);box-shadow:0 4px 20px rgba(0,245,255,.07)}
+.order-card-num{position:absolute;top:12px;right:14px;font-family:'Orbitron',sans-serif;font-size:.68rem;color:var(--muted);font-weight:700}
+.order-card-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.order-avatar{width:36px;height:36px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:900;color:#000}
+.order-name{font-weight:700;font-size:.95rem;color:#fff}
+.order-time{font-size:.7rem;color:var(--muted);margin-top:1px}
+.order-status{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:50px;letter-spacing:1px;text-transform:uppercase;margin-left:auto}
+.status-new{background:rgba(0,245,255,.08);border:1px solid rgba(0,245,255,.22);color:var(--cyan)}
+.status-done{background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.22);color:var(--green)}
+.order-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:.86rem}
+.order-label{color:var(--muted);font-size:.72rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;min-width:72px;flex-shrink:0;margin-top:1px}
+.order-val{color:var(--txt);font-weight:600;word-break:break-word}
+.order-val.wa{color:var(--green)}
+.order-val.price{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:.82rem;font-weight:700}
+.order-val.game{color:var(--cyan)}
+.order-card-actions{display:flex;gap:7px;margin-top:12px;padding-top:11px;border-top:1px solid var(--bdr);flex-wrap:wrap}
+.btn-wa-card{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-family:'Orbitron',sans-serif;font-size:.67rem;font-weight:700;padding:7px 13px;border-radius:8px;text-decoration:none;transition:transform .15s}
+.btn-wa-card:hover{transform:translateY(-1px);box-shadow:0 0 14px rgba(37,211,102,.35)}
+.btn-done{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:linear-gradient(135deg,var(--green),#00b360);color:#000;font-family:'Orbitron',sans-serif;font-size:.67rem;font-weight:700;padding:7px 13px;border-radius:8px}
+.btn-reopen{display:inline-flex;align-items:center;justify-content:center;gap:5px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:var(--muted);font-family:'Orbitron',sans-serif;font-size:.67rem;font-weight:700;padding:7px 13px;border-radius:8px}
+.btn-del{display:inline-flex;align-items:center;justify-content:center;background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.22);color:var(--red);font-family:'Orbitron',sans-serif;font-size:.67rem;font-weight:700;padding:7px 11px;border-radius:8px}
+.btn-del:hover{background:rgba(255,68,68,.18)}
+.export-pop{position:fixed;inset:0;z-index:3000;background:rgba(3,7,18,.92);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.export-pop.on{opacity:1;pointer-events:all}
+.export-box{background:#0c1220;border:1px solid rgba(0,245,255,.18);border-radius:16px;padding:26px;width:100%;max-width:580px;position:relative;max-height:88vh;display:flex;flex-direction:column}
+.export-box h3{font-family:'Orbitron',sans-serif;font-size:.95rem;color:var(--cyan);margin-bottom:13px}
+.export-box textarea{flex:1;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-family:monospace;font-size:.76rem;padding:11px;resize:none;min-height:220px}
+.export-box-actions{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.export-close-x{position:absolute;top:13px;right:16px;color:var(--muted);font-size:1.45rem;padding:3px;transition:color .18s}
+.export-close-x:hover{color:var(--pink)}
+
 /* ── RESPONSIVE ── */
-
-/* Tablet */
-@media(max-width:900px){
-  .pgrid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
-  .steps{grid-template-columns:repeat(2,1fr)}
-  .order-grid{grid-template-columns:1fr}
-}
-
-/* Mobile */
 @media(max-width:768px){
-  /* NAV */
-  nav{padding:12px 16px}
-  .navul{
-    display:none;flex-direction:column;gap:0;
-    position:absolute;top:62px;left:0;right:0;
-    background:rgba(3,7,18,.98);backdrop-filter:blur(24px);
-    border-bottom:1px solid var(--bdr);padding:6px 0;
-    box-shadow:0 8px 32px rgba(0,0,0,.5)
-  }
-  .navul.open{display:flex}
-  .navul li{padding:13px 24px;border-bottom:1px solid rgba(255,255,255,.04)}
-  .navul li:last-child{border-bottom:none}
-  .navul a{font-size:.95rem}
+  nav{padding:11px 16px}
+  .navul{display:flex;flex-direction:column;gap:0;position:absolute;top:60px;left:0;right:0;background:rgba(3,7,18,.98);border-bottom:1px solid var(--bdr);padding:6px 0;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .2s ease,transform .2s ease}
+  .navul.open{opacity:1;transform:translateY(0);pointer-events:all}
+  .navul li{padding:12px 22px;border-bottom:1px solid rgba(255,255,255,.04)}
   .badge-live{display:none}
   .hbg{display:flex}
-
-  /* HERO */
-  .hero{padding:110px 18px 60px;min-height:auto}
-  .hero h1{font-size:clamp(1.8rem,8vw,2.8rem)}
-  .h1b{font-size:.5em}
-  .hero-sub{font-size:.97rem;margin:16px 0 28px}
-  .hero-btns{gap:10px}
-  .btn{padding:11px 22px;font-size:.78rem;letter-spacing:1px}
-  .stats{gap:16px;margin-top:36px}
+  .hero{padding:108px 18px 58px;min-height:auto}
+  .hero h1{font-size:clamp(1.75rem,8vw,2.8rem)}
+  .h1b{font-size:.48em}
+  .hero-sub{font-size:.95rem;margin:14px 0 26px}
+  .hero-btns{gap:9px}
+  .btn{padding:11px 22px;font-size:.76rem}
+  .stats{gap:16px;margin-top:34px}
   .stat-n{font-size:1.5rem}
-  .stat-l{font-size:.68rem}
-  .games-row{gap:8px;margin-top:28px}
-  .game-pill{padding:6px 12px;font-size:.76rem}
-
-  /* SECTIONS */
-  .sec{padding:56px 16px}
-  .sec-t{font-size:clamp(1.4rem,6vw,2rem)}
-  .sec-d{font-size:.9rem}
-
-  /* HOW IT WORKS */
-  .steps{grid-template-columns:1fr 1fr;gap:12px}
-  .step{padding:20px 14px}
-  .step-num{width:40px;height:40px;font-size:.9rem}
-  .step-ico{font-size:1.4rem}
-  .step-ti{font-size:.8rem}
-  .step-de{font-size:.8rem}
-
-  /* TABS */
-  .tabs{gap:8px;margin-bottom:24px}
-  .tab{padding:8px 13px;font-size:.8rem;gap:5px}
-
-  /* PACK GRID */
-  .pgrid{grid-template-columns:repeat(2,1fr);gap:10px;margin:0 0 24px}
-  .pcard{padding:16px 10px}
-  .pico{font-size:1.6rem;margin-bottom:6px}
-  .pname{font-size:.85rem}
-  .pprice{font-size:.8rem}
-  .hot{font-size:.52rem;padding:2px 6px;top:7px;right:7px}
-
-  /* CHAT */
-  .cinput{padding:16px}
-  .crow1{flex-direction:column;gap:8px}
-  .crow2{flex-direction:column;gap:8px;align-items:stretch}
-  .btn-send{width:100%;padding:11px;text-align:center;justify-content:center;display:flex}
-  .cmsg{padding:12px 14px}
-
-  /* MODAL */
-  .modal-ov{padding:12px;align-items:flex-end}
-  .modal-box{
-    padding:24px 18px;border-radius:18px 18px 0 0;
-    max-height:92vh;margin:0;
-    transform:translateY(40px) scale(1) !important
-  }
-  .modal-ov.on .modal-box{transform:translateY(0) scale(1) !important}
-  .modal-ti{font-size:.95rem}
-  .modal-pi{flex-direction:column;gap:4px;align-items:flex-start}
-  .fg input{font-size:.9rem;padding:9px 12px}
-
-  /* TOAST */
-  .toast{
-    right:12px;left:12px;bottom:14px;max-width:none;
-    transform:translateY(130%)
-  }
+  .sec{padding:54px 16px}
+  .sec-t{font-size:clamp(1.35rem,6vw,1.9rem)}
+  .steps{grid-template-columns:1fr 1fr;gap:11px}
+  .step{padding:18px 13px}
+  .pgrid{grid-template-columns:repeat(2,1fr);gap:9px}
+  .pcard{padding:15px 10px 12px}
+  .pico{font-size:1.55rem}
+  .pname{font-size:.82rem}
+  .pprice{font-size:.78rem}
+  .tabs{gap:7px}
+  .tab{padding:7px 12px;font-size:.78rem}
+  .frow{grid-template-columns:1fr}
+  .modal-ov{padding:0;align-items:flex-end}
+  .modal-box{border-radius:20px 20px 0 0;max-height:92vh;max-width:100%}
+  .toast{right:10px;left:10px;bottom:12px;max-width:none;transform:translateY(120%)}
   .toast.on{transform:translateY(0)}
-
-  /* FLOAT BTN */
-  .float-btn{bottom:16px;left:16px;width:48px;height:48px;font-size:1.25rem}
-  .float-lbl{display:none}
-
-  /* FOOTER */
-  footer{padding:36px 16px 24px}
-  .flinks{gap:14px}
-  .flinks a{font-size:.82rem}
-  .fcontact{flex-direction:column;gap:10px}
-  .fcontact a{font-size:.82rem;justify-content:center}
-  .fcred{font-size:.76rem;line-height:1.6}
-
-  /* ADMIN LOGIN */
-  .admin-login{padding:28px 20px;border-radius:16px}
-  .admin-login-ti{font-size:1rem}
-  .admin-login input{font-size:.95rem;padding:10px 14px}
-
-  /* ADMIN DASH */
+  .floats{bottom:15px;left:15px}
+  .float-wa{height:46px;padding:0 15px 0 13px;font-size:.76rem}
+  footer{padding:34px 16px 22px}
+  .fcontact{flex-direction:column;gap:8px;align-items:center}
   .admin-ov{padding:0;align-items:flex-end}
-  .admin-dash{
-    border-radius:18px 18px 0 0;max-height:92vh;
-    width:100%;border-left:none;border-right:none;border-bottom:none
-  }
-  .admin-dash-header{padding:14px 16px;flex-wrap:wrap;gap:10px}
-  .admin-dash-title{font-size:.88rem;gap:7px}
-  .admin-dash-actions{gap:8px}
-  .btn-admin-clear{font-size:.65rem;padding:5px 10px}
-  .admin-dash-body{padding:12px 14px}
-  .order-card{padding:14px 14px}
-  .order-card-actions{flex-wrap:wrap;gap:7px}
-  .btn-wa,.btn-del-order{font-size:.68rem;padding:7px 12px;flex:1;justify-content:center;display:flex;align-items:center}
-  .order-label{min-width:70px;font-size:.7rem}
-  .order-row{font-size:.84rem}
+  .admin-login{border-radius:18px 18px 0 0;padding:28px 20px 32px;max-width:100%;width:100%;border-left:none;border-right:none;border-bottom:none}
+  .admin-dash{border-radius:18px 18px 0 0;max-height:92vh;border-left:none;border-right:none;border-bottom:none}
+  .admin-dash-header{padding:13px 15px}
+  .admin-filter-bar{padding:9px 14px}
+  .admin-info-bar{padding:9px 13px;font-size:.74rem}
+  .admin-dash-body{padding:12px 13px}
+  .order-grid{grid-template-columns:1fr}
+  .order-card-actions{gap:6px}
+  .btn-wa-card,.btn-done,.btn-reopen,.btn-del{font-size:.64rem;padding:7px 10px;flex:1}
+  .export-pop{padding:0;align-items:flex-end}
+  .export-box{border-radius:18px 18px 0 0;max-height:88vh}
 }
-
-/* Very small phones */
 @media(max-width:380px){
-  .hero h1{font-size:1.6rem}
-  .btn{padding:10px 18px;font-size:.74rem}
-  .pgrid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .pcard{padding:13px 8px}
-  .tabs{gap:6px}
-  .tab{padding:7px 10px;font-size:.75rem}
-  .steps{grid-template-columns:1fr}
+  .pgrid{gap:8px}
+  .pcard{padding:12px 8px 10px}
+  .tabs{gap:5px}
+  .tab{padding:7px 10px;font-size:.73rem}
+}
+@media(hover:none) and (pointer:coarse){
+  .pcard:hover{transform:none;border-color:var(--bdr);box-shadow:none}
+  .pcard:active{transform:scale(.96);border-color:var(--cyan);box-shadow:0 4px 18px rgba(0,245,255,.14)}
+  .float-wa:hover{transform:none}
 }
 </style>
 </head>
 <body>
 
-<!-- PARTICLES CANVAS -->
 <canvas id="canvas"></canvas>
 
 <!-- TOAST -->
 <div class="toast" id="toast">
-  <div class="toast-ico">✅</div>
+  <div class="toast-ico" id="toast-ico">✅</div>
   <div>
-    <div class="toast-msg">Request Sent!</div>
-    <div class="toast-sub">Admin will contact you soon via WhatsApp.</div>
+    <div class="toast-msg" id="toast-msg">Request Sent!</div>
+    <div class="toast-sub" id="toast-sub">WhatsApp is opening. Admin will contact you shortly.</div>
   </div>
 </div>
 
-<!-- FLOATING WHATSAPP -->
-<a href="https://wa.me/977" class="float-btn" target="_blank" rel="noopener">
-  <span>💬</span>
-  <span class="float-lbl">Chat Now</span>
-</a>
+<!-- FLOATING BUTTONS -->
+<div class="floats">
+  <a href="https://wa.me/9779813589237?text=Hello%20GAIDA%20TOPUP!%20I%20want%20to%20place%20a%20topup%20order%20%F0%9F%8E%AE" class="float-wa" target="_blank" rel="noopener" aria-label="Order via WhatsApp">
+    <span class="float-wa-ico">💬</span>
+    <span>Order via WhatsApp</span>
+  </a>
+</div>
 
 <!-- NAV -->
 <nav>
   <div class="logo">GAIDA <span>TOPUP</span></div>
   <ul class="navul" id="navul">
-    <li><a href="#home" onclick="cn()">Home</a></li>
-    <li><a href="#how" onclick="cn()">How It Works</a></li>
-    <li><a href="#topup" onclick="cn()">Topup</a></li>
-    <li><a href="#reviews" onclick="cn()">Reviews</a></li>
+    <li><a href="#home" onclick="closeNav()">Home</a></li>
+    <li><a href="#how" onclick="closeNav()">How It Works</a></li>
+    <li><a href="#topup" onclick="closeNav()">Topup</a></li>
+    <li><a href="#reviews" onclick="closeNav()">Reviews</a></li>
   </ul>
   <div class="badge-live">🟢 LIVE</div>
-  <button class="hbg" onclick="tn()">
+  <button class="hbg" id="hbg" onclick="toggleNav()" aria-label="Toggle menu">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -547,12 +388,12 @@ footer{position:relative;z-index:1;
 <section class="hero" id="home">
   <h1>
     <span class="h1a">Fast • Cheap • Trusted</span>
-    <span class="h1b">Game Topups</span>
+    <span class="h1b">Game Topups in Nepal</span>
   </h1>
-  <p class="hero-sub">Nepal's fastest game topup service. Instant processing, unbeatable prices, and trusted by gamers across the country.</p>
+  <p class="hero-sub">Nepal's fastest game topup service. Instant WhatsApp ordering, unbeatable prices, and trusted by gamers across the country.</p>
   <div class="hero-btns">
-    <button class="btn btn-p" onclick="ss('#topup')">⚡ Order Now</button>
-    <button class="btn btn-o" onclick="ss('#reviews')">💬 Reviews</button>
+    <button class="btn btn-p" onclick="scrollSec('#topup')">⚡ Order Now</button>
+    <a href="https://wa.me/9779813589237?text=Hello%20GAIDA%20TOPUP!%20I%20need%20help%20with%20a%20topup%20%F0%9F%8E%AE" class="btn btn-wa-main" target="_blank" rel="noopener">💬 Chat on WhatsApp</a>
   </div>
   <div class="stats">
     <div><div class="stat-n">500+</div><div class="stat-l">Orders Done</div></div>
@@ -561,10 +402,10 @@ footer{position:relative;z-index:1;
     <div><div class="stat-n">24/7</div><div class="stat-l">Support</div></div>
   </div>
   <div class="games-row">
-    <div class="game-pill">🌟 Brawl Stars</div>
-    <div class="game-pill">⚔️ Clash of Clans</div>
-    <div class="game-pill">🔥 Free Fire</div>
-    <div class="game-pill">⚡ Mobile Legends</div>
+    <div class="game-pill" onclick="scrollSec('#topup');swt(document.querySelector('.tab'),'bs')">🌟 Brawl Stars</div>
+    <div class="game-pill" onclick="scrollSec('#topup');swt(document.querySelectorAll('.tab')[1],'coc')">⚔️ Clash of Clans</div>
+    <div class="game-pill" onclick="scrollSec('#topup');swt(document.querySelectorAll('.tab')[2],'ff')">🔥 Free Fire</div>
+    <div class="game-pill" onclick="scrollSec('#topup');swt(document.querySelectorAll('.tab')[3],'ml')">⚡ Mobile Legends</div>
   </div>
 </section>
 
@@ -579,42 +420,30 @@ footer{position:relative;z-index:1;
     <div class="divider"></div>
   </div>
   <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-ico">🎮</div>
-      <div class="step-ti">Choose Pack</div>
-      <div class="step-de">Browse our topup menu and select the pack you want for your favorite game.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-ico">📋</div>
-      <div class="step-ti">Fill Request</div>
-      <div class="step-de">Submit your player details and WhatsApp number via the order form.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-ico">💳</div>
-      <div class="step-ti">Pay &amp; Receive</div>
-      <div class="step-de">Admin contacts you on WhatsApp. Pay and receive your topup instantly.</div>
-    </div>
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-ico">✅</div>
-      <div class="step-ti">Enjoy!</div>
-      <div class="step-de">Topup credited to your account. Drop a review and come back for more!</div>
-    </div>
+    <div class="step"><div class="step-num">01</div><div class="step-ico">🎮</div><div class="step-ti">Choose Pack</div><div class="step-de">Browse our topup menu and select the pack you want for your favourite game.</div></div>
+    <div class="step"><div class="step-num">02</div><div class="step-ico">📋</div><div class="step-ti">Fill Request</div><div class="step-de">Submit your player details and WhatsApp number via the order form.</div></div>
+    <div class="step"><div class="step-num">03</div><div class="step-ico">💬</div><div class="step-ti">WhatsApp Order</div><div class="step-de">Your order is sent directly to admin on WhatsApp. Pay via eSewa, Khalti, or bank transfer.</div></div>
+    <div class="step"><div class="step-num">04</div><div class="step-ico">✅</div><div class="step-ti">Enjoy!</div><div class="step-de">Topup credited to your account instantly. Drop a review and come back for more!</div></div>
   </div>
 </section>
 
 <div class="glow-line"></div>
 
-<!-- TOPUP SECTION -->
+<!-- TOPUP -->
 <section class="sec" id="topup">
   <div class="sec-h">
     <div class="eyebrow">🎮 Topup Menu</div>
     <h2 class="sec-t">Select Your Game</h2>
-    <p class="sec-d">Click any pack to instantly place an order request</p>
+    <p class="sec-d">Click any pack — your order is sent instantly via WhatsApp</p>
     <div class="divider"></div>
+  </div>
+
+  <!-- Payment methods -->
+  <div class="payment-strip">
+    <div class="pay-badge">💳 <strong>eSewa</strong></div>
+    <div class="pay-badge">📱 <strong>Khalti</strong></div>
+    <div class="pay-badge">🏦 <strong>Bank Transfer</strong></div>
+    <div class="pay-badge">💬 <strong>Admin confirms via WhatsApp</strong></div>
   </div>
 
   <div class="tabs">
@@ -627,123 +456,58 @@ footer{position:relative;z-index:1;
   <!-- BRAWL STARS -->
   <div class="panel on" id="p-bs">
     <div class="pgrid">
-      <div class="pcard" onclick="om('Brawl Stars','Brawl Pass Plus','NPR 1,050','Player Tag')">
-        <div class="hot">🔥 HOT</div><div class="pico">🏆</div>
-        <div class="pname">Brawl Pass Plus</div><div class="pprice">NPR 1,050</div>
-      </div>
-      <div class="pcard" onclick="om('Brawl Stars','30 Gems','NPR 180','Player Tag')">
-        <div class="pico">💎</div><div class="pname">30 Gems</div><div class="pprice">NPR 180</div>
-      </div>
-      <div class="pcard" onclick="om('Brawl Stars','170 Gems','NPR 700','Player Tag')">
-        <div class="hot">🔥 HOT</div><div class="pico">💎</div>
-        <div class="pname">170 Gems</div><div class="pprice">NPR 700</div>
-      </div>
-      <div class="pcard" onclick="om('Brawl Stars','360 Gems','NPR 1,500','Player Tag')">
-        <div class="pico">💎</div><div class="pname">360 Gems</div><div class="pprice">NPR 1,500</div>
-      </div>
-      <div class="pcard" onclick="om('Brawl Stars','950 Gems','NPR 3,500','Player Tag')">
-        <div class="hot">🔥 HOT</div><div class="pico">💎</div>
-        <div class="pname">950 Gems</div><div class="pprice">NPR 3,500</div>
-      </div>
-      <div class="pcard" onclick="om('Brawl Stars','6800 Gems','NPR 20,000','Player Tag')">
-        <div class="pico">💎</div><div class="pname">6800 Gems</div><div class="pprice">NPR 20,000</div>
-      </div>
+      <div class="pcard" onclick="openModal('Brawl Stars','🌟','Brawl Pass Plus','NPR 1,050','Player Tag')"><div class="hot hot-fire">🔥 HOT</div><div class="pico">🏆</div><div class="pname">Brawl Pass Plus</div><div class="pprice">NPR 1,050</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Brawl Stars','🌟','30 Gems','NPR 180','Player Tag')"><div class="pico">💎</div><div class="pname">30 Gems</div><div class="pprice">NPR 180</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Brawl Stars','🌟','170 Gems','NPR 700','Player Tag')"><div class="hot hot-star">⭐ POPULAR</div><div class="pico">💎</div><div class="pname">170 Gems</div><div class="pprice">NPR 700</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Brawl Stars','🌟','360 Gems','NPR 1,500','Player Tag')"><div class="pico">💎</div><div class="pname">360 Gems</div><div class="pprice">NPR 1,500</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Brawl Stars','🌟','950 Gems','NPR 3,500','Player Tag')"><div class="hot hot-best">💰 BEST VALUE</div><div class="pico">💎</div><div class="pname">950 Gems</div><div class="pprice">NPR 3,500</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Brawl Stars','🌟','6800 Gems','NPR 20,000','Player Tag')"><div class="pico">💎</div><div class="pname">6800 Gems</div><div class="pprice">NPR 20,000</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
     </div>
   </div>
 
   <!-- CLASH OF CLANS -->
   <div class="panel" id="p-coc">
-    <div class="pgrid" style="max-width:270px">
-      <div class="pcard" onclick="om('Clash of Clans','Gold Pass','NPR 1,100','Player Tag')">
-        <div class="hot">🔥 HOT</div><div class="pico">🏅</div>
-        <div class="pname">Gold Pass</div><div class="pprice">NPR 1,100</div>
-      </div>
+    <div class="pgrid" style="max-width:260px">
+      <div class="pcard" onclick="openModal('Clash of Clans','⚔️','Gold Pass','NPR 1,100','Player Tag')"><div class="hot hot-fire">🔥 HOT</div><div class="pico">🏅</div><div class="pname">Gold Pass</div><div class="pprice">NPR 1,100</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
     </div>
-    <p style="text-align:center;color:var(--muted);margin-top:20px;font-size:.9rem">⏳ More packs coming soon...</p>
+    <p style="text-align:center;color:var(--muted);margin-top:18px;font-size:.88rem">⏳ More packs coming soon...</p>
   </div>
 
   <!-- FREE FIRE -->
   <div class="panel" id="p-ff">
     <div class="pgrid">
-      <div class="pcard" onclick="om('Free Fire','25 Diamonds','NPR 45','UID &amp; Username')">
-        <div class="hot">🔥 HOT</div><div class="pico">💠</div>
-        <div class="pname">25 Diamonds</div><div class="pprice">NPR 45</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','50 Diamonds','NPR 75','UID &amp; Username')">
-        <div class="pico">💠</div><div class="pname">50 Diamonds</div><div class="pprice">NPR 75</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','115 Diamonds','NPR 155','UID &amp; Username')">
-        <div class="hot">🔥 HOT</div><div class="pico">💠</div>
-        <div class="pname">115 Diamonds</div><div class="pprice">NPR 155</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','240 Diamonds','NPR 250','UID &amp; Username')">
-        <div class="pico">💠</div><div class="pname">240 Diamonds</div><div class="pprice">NPR 250</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','480 Diamonds','NPR 500','UID &amp; Username')">
-        <div class="hot">🔥 HOT</div><div class="pico">💠</div>
-        <div class="pname">480 Diamonds</div><div class="pprice">NPR 500</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','1090 Diamonds','NPR 1,015','UID &amp; Username')">
-        <div class="pico">💠</div><div class="pname">1090 Diamonds</div><div class="pprice">NPR 1,015</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','2530 Diamonds','NPR 2,200','UID &amp; Username')">
-        <div class="hot">🔥 HOT</div><div class="pico">💠</div>
-        <div class="pname">2530 Diamonds</div><div class="pprice">NPR 2,200</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','5060 Diamonds','NPR 4,200','UID &amp; Username')">
-        <div class="pico">💠</div><div class="pname">5060 Diamonds</div><div class="pprice">NPR 4,200</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','10120 Diamonds','NPR 8,500','UID &amp; Username')">
-        <div class="pico">💠</div><div class="pname">10120 Diamonds</div><div class="pprice">NPR 8,500</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','Weekly Lite','NPR 100','UID &amp; Username')">
-        <div class="hot">🔥 HOT</div><div class="pico">📅</div>
-        <div class="pname">Weekly Lite</div><div class="pprice">NPR 100</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','Weekly Pass','NPR 210','UID &amp; Username')">
-        <div class="pico">📅</div><div class="pname">Weekly Pass</div><div class="pprice">NPR 210</div>
-      </div>
-      <div class="pcard" onclick="om('Free Fire','Monthly Pass','NPR 1,050','UID &amp; Username')">
-        <div class="hot">🔥 HOT</div><div class="pico">📅</div>
-        <div class="pname">Monthly Pass</div><div class="pprice">NPR 1,050</div>
-      </div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','25 Diamonds','NPR 45','UID and Username')"><div class="hot hot-fire">🔥 HOT</div><div class="pico">💠</div><div class="pname">25 Diamonds</div><div class="pprice">NPR 45</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','50 Diamonds','NPR 75','UID and Username')"><div class="pico">💠</div><div class="pname">50 Diamonds</div><div class="pprice">NPR 75</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','115 Diamonds','NPR 155','UID and Username')"><div class="hot hot-star">⭐ POPULAR</div><div class="pico">💠</div><div class="pname">115 Diamonds</div><div class="pprice">NPR 155</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','240 Diamonds','NPR 250','UID and Username')"><div class="pico">💠</div><div class="pname">240 Diamonds</div><div class="pprice">NPR 250</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','480 Diamonds','NPR 500','UID and Username')"><div class="hot hot-best">💰 BEST VALUE</div><div class="pico">💠</div><div class="pname">480 Diamonds</div><div class="pprice">NPR 500</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','1090 Diamonds','NPR 1,015','UID and Username')"><div class="pico">💠</div><div class="pname">1090 Diamonds</div><div class="pprice">NPR 1,015</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','2530 Diamonds','NPR 2,200','UID and Username')"><div class="hot hot-fire">🔥 HOT</div><div class="pico">💠</div><div class="pname">2530 Diamonds</div><div class="pprice">NPR 2,200</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','5060 Diamonds','NPR 4,200','UID and Username')"><div class="pico">💠</div><div class="pname">5060 Diamonds</div><div class="pprice">NPR 4,200</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','10120 Diamonds','NPR 8,500','UID and Username')"><div class="pico">💠</div><div class="pname">10120 Diamonds</div><div class="pprice">NPR 8,500</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','Weekly Lite','NPR 100','UID and Username')"><div class="hot hot-new">🆕 NEW</div><div class="pico">📅</div><div class="pname">Weekly Lite</div><div class="pprice">NPR 100</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','Weekly Pass','NPR 210','UID and Username')"><div class="pico">📅</div><div class="pname">Weekly Pass</div><div class="pprice">NPR 210</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Free Fire','🔥','Monthly Pass','NPR 1,050','UID and Username')"><div class="hot hot-best">💰 BEST VALUE</div><div class="pico">📅</div><div class="pname">Monthly Pass</div><div class="pprice">NPR 1,050</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
     </div>
   </div>
 
   <!-- MOBILE LEGENDS -->
   <div class="panel" id="p-ml">
     <div class="pgrid">
-      <div class="pcard" onclick="om('Mobile Legends','55 Diamonds','NPR 195','User ID &amp; Server ID')">
-        <div class="pico">⚡</div><div class="pname">55 Diamonds</div><div class="pprice">NPR 195</div>
-      </div>
-      <div class="pcard" onclick="om('Mobile Legends','172 Diamonds','NPR 450','User ID &amp; Server ID')">
-        <div class="hot">🔥 HOT</div><div class="pico">⚡</div>
-        <div class="pname">172 Diamonds</div><div class="pprice">NPR 450</div>
-      </div>
-      <div class="pcard" onclick="om('Mobile Legends','257 Diamonds','NPR 600','User ID &amp; Server ID')">
-        <div class="pico">⚡</div><div class="pname">257 Diamonds</div><div class="pprice">NPR 600</div>
-      </div>
-      <div class="pcard" onclick="om('Mobile Legends','706 Diamonds','NPR 1,850','User ID &amp; Server ID')">
-        <div class="hot">🔥 HOT</div><div class="pico">⚡</div>
-        <div class="pname">706 Diamonds</div><div class="pprice">NPR 1,850</div>
-      </div>
-      <div class="pcard" onclick="om('Mobile Legends','2195 Diamonds','NPR 5,050','User ID &amp; Server ID')">
-        <div class="pico">⚡</div><div class="pname">2195 Diamonds</div><div class="pprice">NPR 5,050</div>
-      </div>
-      <div class="pcard" onclick="om('Mobile Legends','Weekly Pass','NPR 280','User ID &amp; Server ID')">
-        <div class="hot">🔥 HOT</div><div class="pico">📅</div>
-        <div class="pname">Weekly Pass</div><div class="pprice">NPR 280</div>
-      </div>
-      <div class="pcard" onclick="om('Mobile Legends','Twilight Pass','NPR 1,250','User ID &amp; Server ID')">
-        <div class="pico">🌙</div><div class="pname">Twilight Pass</div><div class="pprice">NPR 1,250</div>
-      </div>
+      <div class="pcard" onclick="openModal('Mobile Legends','⚡','55 Diamonds','NPR 195','User ID and Server ID')"><div class="pico">⚡</div><div class="pname">55 Diamonds</div><div class="pprice">NPR 195</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Mobile Legends','⚡','172 Diamonds','NPR 450','User ID and Server ID')"><div class="hot hot-fire">🔥 HOT</div><div class="pico">⚡</div><div class="pname">172 Diamonds</div><div class="pprice">NPR 450</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Mobile Legends','⚡','257 Diamonds','NPR 600','User ID and Server ID')"><div class="pico">⚡</div><div class="pname">257 Diamonds</div><div class="pprice">NPR 600</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Mobile Legends','⚡','706 Diamonds','NPR 1,850','User ID and Server ID')"><div class="hot hot-best">💰 BEST VALUE</div><div class="pico">⚡</div><div class="pname">706 Diamonds</div><div class="pprice">NPR 1,850</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Mobile Legends','⚡','2195 Diamonds','NPR 5,050','User ID and Server ID')"><div class="pico">⚡</div><div class="pname">2195 Diamonds</div><div class="pprice">NPR 5,050</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Mobile Legends','⚡','Weekly Pass','NPR 280','User ID and Server ID')"><div class="hot hot-fire">🔥 HOT</div><div class="pico">📅</div><div class="pname">Weekly Pass</div><div class="pprice">NPR 280</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
+      <div class="pcard" onclick="openModal('Mobile Legends','⚡','Twilight Pass','NPR 1,250','User ID and Server ID')"><div class="pico">🌙</div><div class="pname">Twilight Pass</div><div class="pprice">NPR 1,250</div><div class="pcard-cta">💬 Order via WhatsApp</div></div>
     </div>
   </div>
 </section>
 
 <div class="glow-line"></div>
 
-<!-- REVIEWS / CHAT -->
+<!-- REVIEWS -->
 <section class="sec" id="reviews" style="background:linear-gradient(180deg,transparent,rgba(180,0,255,.04),transparent)">
   <div class="sec-h">
     <div class="eyebrow">💬 Community</div>
@@ -754,15 +518,15 @@ footer{position:relative;z-index:1;
   <div class="ccon">
     <div class="cinput">
       <div class="crow1">
-        <input type="text" id="cname" placeholder="Your name..." maxlength="30"/>
+        <input type="text" id="cname" placeholder="Your name..." maxlength="30" autocomplete="name"/>
       </div>
       <div class="crow2">
         <textarea id="cmsg" placeholder="Write your review or message..." maxlength="300" rows="2"></textarea>
-        <button class="btn-send" onclick="sc()">Send ✈️</button>
+        <button class="btn-send" onclick="sendChat()">Send ✈️</button>
       </div>
     </div>
     <div class="cboard" id="cboard">
-      <div class="no-msg" id="nomsg">No messages yet. Be the first to review! 🎮</div>
+      <div class="no-msg">No messages yet. Be the first to review! 🎮</div>
     </div>
   </div>
 </section>
@@ -779,262 +543,346 @@ footer{position:relative;z-index:1;
     <a href="#topup">Topup</a>
     <a href="#reviews">Reviews</a>
   </div>
-  <!-- NEW: Developer contact info -->
-  <div class="fcontact-label">Developer Contact</div>
+  <div class="fcontact-label">Contact</div>
   <div class="fcontact">
-    <a href="/cdn-cgi/l/email-protection#0e6a677e6f60656f7c3f636f606a6f623f4e69636f6762206d6163">
-      📧 <span class="__cf_email__" data-cfemail="b2d6dbc2d3dcd9d3c083dfd3dcd6d3de83f2d5dfd3dbde9cd1dddf">[email&#160;protected]</span>
-    </a>
+    <a href="https://wa.me/9779813589237" target="_blank" rel="noopener">💬 WhatsApp: +977 9813589237</a>
+    <a href="mailto:dipankar1mandal1@gmail.com">📧 dipankar1mandal1@gmail.com</a>
   </div>
   <div class="fdiv"></div>
-  <p class="fcred">
-    Website Developed by
-    Dipankar Mandal
-    &nbsp;|&nbsp; &copy; 2025 GAIDA TOPUP. All rights reserved.
-  </p>
-  <!-- Hidden admin trigger — only admin knows to click this -->
-  <div style="margin-top:14px">
-    <span class="admin-trigger" onclick="openAdmin()" title="Admin">⚙ v1.0</span>
-  </div>
+  <p class="fcred">Website Developed by Dipankar Mandal &nbsp;|&nbsp; &copy; 2026 GAIDA TOPUP. All rights reserved.</p>
+  <span class="admin-trigger" onclick="openAdmin()">⚙ v2.0</span>
 </footer>
 
-<!-- ORDER MODAL -->
+<!-- ════════════════════════════════════════
+     ORDER MODAL — WhatsApp Auto Order
+════════════════════════════════════════ -->
 <div class="modal-ov" id="modal">
   <div class="modal-box">
-    <button class="modal-x" onclick="cm()">&#215;</button>
-    <div class="modal-ti">⚡ Place Order Request</div>
-    <div class="modal-su">Fill in your details — admin will contact you via WhatsApp</div>
-    <div class="modal-pi">
-      <span class="modal-pn" id="mpn">—</span>
-      <span class="modal-pp" id="mpp">—</span>
+    <!-- Header -->
+    <div class="modal-header">
+      <div class="modal-header-glow"></div>
+      <button class="modal-x" onclick="closeModal()">&#215;</button>
+      <div class="modal-game-badge" id="m-game-badge">🎮 Game</div>
+      <div class="modal-ti">⚡ Place Your Order</div>
+      <div class="modal-su">Fill in your details — your order goes directly to admin on WhatsApp</div>
+      <div class="modal-pi">
+        <span class="modal-pn" id="mpn">—</span>
+        <span class="modal-pp" id="mpp">—</span>
+      </div>
     </div>
-    <div class="fg">
-      <label>Your Full Name *</label>
-      <input type="text" id="o-name" placeholder="Enter your name..."/>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!-- Warning -->
+      <div class="warn-box">
+        <div class="warn-ico">⚠️</div>
+        <div class="warn-txt">
+          <strong>IMPORTANT WARNING</strong>
+          Please do <u>NOT</u> send spam or unrelated messages. Any spam or abusive messages will be reported immediately. Only genuine order requests will be processed.
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="frow">
+        <div class="fg">
+          <label><span class="lico">👤</span> Your Full Name *</label>
+          <input type="text" id="o-name" placeholder="Enter your name..." autocomplete="name"/>
+        </div>
+        <div class="fg">
+          <label><span class="lico">📱</span> Your WhatsApp *</label>
+          <input type="tel" id="o-wa" placeholder="+977 98XXXXXXXX" autocomplete="tel"/>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label><span class="lico">🎮</span> Game</label>
+          <input type="text" id="o-game" readonly tabindex="-1"/>
+        </div>
+        <div class="fg">
+          <label><span class="lico">📦</span> Pack</label>
+          <input type="text" id="o-pack" readonly tabindex="-1"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label><span class="lico">🆔</span> <span id="o-pdlabel">Player Details</span> *</label>
+        <input type="text" id="o-pd" placeholder="Enter your player details..."/>
+        <span class="field-hint" id="o-pd-hint">Enter the required ID/Tag for your game</span>
+      </div>
+      <div class="fg">
+        <label><span class="lico">💬</span> Optional Message</label>
+        <textarea id="o-msg" placeholder="Any special notes for admin? (optional)" rows="2"></textarea>
+      </div>
+
+      <button class="btn-submit" id="btn-submit" onclick="submitOrder()">
+        <span class="btn-txt">💬 Send Order via WhatsApp</span>
+        <div class="spinner"></div>
+      </button>
+
+      <p style="text-align:center;font-size:.72rem;color:var(--muted);margin-top:12px;line-height:1.5">
+        By submitting, WhatsApp will open with your order details pre-filled.<br>
+        Admin will confirm your order and share payment details.
+      </p>
     </div>
-    <div class="fg">
-      <label>Game</label>
-      <input type="text" id="o-game" readonly style="opacity:.65"/>
-    </div>
-    <div class="fg">
-      <label>Pack Selected</label>
-      <input type="text" id="o-pack" readonly style="opacity:.65"/>
-    </div>
-    <div class="fg">
-      <label id="o-pdlabel">Player Details *</label>
-      <input type="text" id="o-pd" placeholder="Enter your player details..."/>
-    </div>
-    <div class="fg">
-      <label>WhatsApp Number *</label>
-      <input type="tel" id="o-wa" placeholder="+977 98XXXXXXXX"/>
-    </div>
-    <button class="btn btn-p" style="width:100%;justify-content:center;margin-top:10px" onclick="sub()">
-      ✅ Submit Request
-    </button>
   </div>
 </div>
 
-<!-- ═══════════ ADMIN PANEL ═══════════ -->
+<!-- ADMIN PANEL -->
 <div class="admin-ov" id="adminOv">
-
-  <!-- LOGIN BOX -->
   <div class="admin-login" id="adminLogin">
     <div class="admin-login-icon">🔐</div>
     <div class="admin-login-ti">Admin Access</div>
     <div class="admin-login-sub">Enter your password to view all order requests</div>
-    <input type="password" id="adminPwd" placeholder="Password..." onkeydown="if(event.key==='Enter')adminLogin()"/>
-    <button class="btn-admin-login" onclick="adminLogin()">🔓 Login</button>
+    <input type="password" id="adminPwd" placeholder="Password..." autocomplete="current-password"/>
+    <button class="btn-admin-login" onclick="doAdminLogin()">🔓 Login</button>
     <div class="admin-login-err" id="adminErr">❌ Wrong password. Try again.</div>
-    <button onclick="closeAdmin()" style="margin-top:16px;color:var(--muted);font-size:.82rem;display:block;width:100%;text-align:center">Cancel</button>
+    <button class="admin-cancel" onclick="closeAdmin()">Cancel</button>
   </div>
-
-  <!-- DASHBOARD (hidden until logged in) -->
   <div class="admin-dash" id="adminDash" style="display:none">
     <div class="admin-dash-header">
-      <div class="admin-dash-title">
-        <span>📋</span> Order Requests
-        <div class="admin-count-badge" id="orderCount">0 orders</div>
-      </div>
+      <div class="admin-dash-title">📋 Order Requests <div class="admin-count-badge" id="orderCount">0 orders</div></div>
       <div class="admin-dash-actions">
+        <button class="btn-admin-export" onclick="exportOrders()">📤 Export</button>
         <button class="btn-admin-clear" onclick="clearAllOrders()">🗑 Clear All</button>
         <button class="btn-admin-close" onclick="closeAdmin()">&#215;</button>
       </div>
     </div>
-    <div class="admin-dash-body">
-      <div id="orderList"></div>
+    <div class="admin-filter-bar">
+      <button class="afilter on" onclick="setFilter(this,'all')">All</button>
+      <button class="afilter" onclick="setFilter(this,'new')">🆕 New</button>
+      <button class="afilter" onclick="setFilter(this,'done')">✅ Done</button>
     </div>
+    <div class="admin-info-bar" id="adminInfoBar">
+      <span>ℹ️</span>
+      <span><strong>Note:</strong> Orders placed by customers are sent directly to your WhatsApp (+977 9813589237). This panel logs orders saved in the customer's browser on this device.</span>
+      <button class="admin-info-close" onclick="document.getElementById('adminInfoBar').style.display='none'">✕</button>
+    </div>
+    <div class="admin-dash-body"><div id="orderList"></div></div>
   </div>
-
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<!-- EXPORT POPUP -->
+<div class="export-pop" id="exportPop">
+  <div class="export-box">
+    <button class="export-close-x" onclick="document.getElementById('exportPop').classList.remove('on')">&#215;</button>
+    <h3>📤 Export All Orders</h3>
+    <textarea id="exportTxt" readonly></textarea>
+    <div class="export-box-actions">
+      <button class="btn btn-p" style="padding:9px 20px;font-size:.76rem" onclick="copyExport(this)">📋 Copy All</button>
+      <button onclick="document.getElementById('exportPop').classList.remove('on')" style="color:var(--muted);font-size:.85rem;padding:9px">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+var OWNER_WA = '9779813589237';
+var ADMIN_PASS = 'gaida2025';
+var curFilter = 'all';
+
 /* ── PARTICLES ── */
 (function(){
   var c=document.getElementById('canvas'),x=c.getContext('2d');
   var CL=['rgba(0,245,255,','rgba(180,0,255,','rgba(255,0,110,','rgba(255,215,0,'];
-  var ps=[];
-  function rsz(){c.width=window.innerWidth;c.height=window.innerHeight}
-  rsz();window.addEventListener('resize',rsz);
+  var ps=[],mob=window.innerWidth<768,skip=mob?2:1,frame=0;
+  function rsz(){c.width=window.innerWidth;c.height=window.innerHeight;mob=window.innerWidth<768;skip=mob?2:1;}
+  rsz();var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(rsz,200);});
   function P(){
     this.x=Math.random()*c.width;this.y=Math.random()*c.height;
-    this.s=Math.random()*2+.5;this.vx=(Math.random()-.5)*.42;this.vy=(Math.random()-.5)*.42;
-    this.cl=CL[Math.floor(Math.random()*CL.length)];this.a=Math.random()*.45+.1;
+    this.s=Math.random()*(mob?1.4:1.8)+.4;
+    this.vx=(Math.random()-.5)*(mob?.25:.38);this.vy=(Math.random()-.5)*(mob?.25:.38);
+    this.cl=CL[Math.floor(Math.random()*CL.length)];this.a=Math.random()*(mob?.28:.42)+.08;
   }
-  P.prototype.u=function(){
-    this.x+=this.vx;this.y+=this.vy;
-    if(this.x<0||this.x>c.width)this.vx*=-1;
-    if(this.y<0||this.y>c.height)this.vy*=-1;
-  };
-  P.prototype.d=function(){
-    x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);
-    x.fillStyle=this.cl+this.a+')';x.fill();
-  };
-  for(var i=0;i<115;i++)ps.push(new P());
+  P.prototype.u=function(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>c.width)this.vx*=-1;if(this.y<0||this.y>c.height)this.vy*=-1;};
+  P.prototype.d=function(){x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=this.cl+this.a+')';x.fill();};
+  var count=mob?40:100;for(var i=0;i<count;i++)ps.push(new P());
   function loop(){
+    requestAnimationFrame(loop);frame++;if(frame%skip!==0)return;
     x.clearRect(0,0,c.width,c.height);
     for(var i=0;i<ps.length;i++){
       ps[i].u();ps[i].d();
-      for(var j=i+1;j<ps.length;j++){
-        var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<90){
-          x.beginPath();
-          x.strokeStyle='rgba(0,245,255,'+(0.07*(1-d/90))+')';
-          x.lineWidth=.5;x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);x.stroke();
-        }
-      }
+      if(!mob){for(var j=i+1;j<ps.length;j++){var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d2=dx*dx+dy*dy;if(d2<7225){var d=Math.sqrt(d2);x.beginPath();x.strokeStyle='rgba(0,245,255,'+(0.06*(1-d/85))+')';x.lineWidth=.5;x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);x.stroke();}}}
     }
-    requestAnimationFrame(loop);
   }
   loop();
 })();
 
 /* ── NAV ── */
-function tn(){document.getElementById('navul').classList.toggle('open')}
-function cn(){document.getElementById('navul').classList.remove('open')}
-function ss(sel){var el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth'})}
+function toggleNav(){document.getElementById('navul').classList.toggle('open');}
+function closeNav(){document.getElementById('navul').classList.remove('open');}
+function scrollSec(sel){var el=document.querySelector(sel);if(el)el.scrollIntoView({behavior:'smooth'});}
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
   a.addEventListener('click',function(e){
     var t=document.querySelector(this.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});closeNav();}
   });
 });
 
 /* ── TABS ── */
 function swt(btn,g){
-  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});
-  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on')});
-  document.getElementById('p-'+g).classList.add('on');
-  btn.classList.add('on');
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('p-'+g).classList.add('on');btn.classList.add('on');
+}
+
+/* ── TOAST ── */
+var toastTimer;
+function showToast(msg, sub, isError){
+  var t=document.getElementById('toast');
+  document.getElementById('toast-ico').textContent = isError ? '❌' : '✅';
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-sub').textContent = sub;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){t.classList.remove('on');}, 5000);
 }
 
 /* ── ORDER MODAL ── */
-function om(game,pack,price,pl){
-  document.getElementById('mpn').textContent=pack+' — '+game;
-  document.getElementById('mpp').textContent=price;
-  document.getElementById('o-game').value=game;
-  document.getElementById('o-pack').value=pack;
-  document.getElementById('o-pdlabel').textContent=pl+' *';
-  document.getElementById('o-pd').placeholder='Enter your '+pl+'...';
-  ['o-name','o-pd','o-wa'].forEach(function(id){document.getElementById(id).value=''});
+var currentOrder = {};
+
+function openModal(game, gameEmoji, pack, price, playerLabel){
+  currentOrder = {game:game, gameEmoji:gameEmoji, pack:pack, price:price, playerLabel:playerLabel};
+  document.getElementById('m-game-badge').textContent = gameEmoji + ' ' + game;
+  document.getElementById('mpn').textContent = pack + ' — ' + game;
+  document.getElementById('mpp').textContent = price;
+  document.getElementById('o-game').value = game;
+  document.getElementById('o-pack').value = pack;
+  document.getElementById('o-pdlabel').textContent = playerLabel;
+  document.getElementById('o-pd').placeholder = 'Enter your ' + playerLabel + '...';
+  document.getElementById('o-pd-hint').textContent = getPlayerHint(playerLabel);
+  // Clear user fields only
+  document.getElementById('o-name').value = '';
+  document.getElementById('o-pd').value = '';
+  document.getElementById('o-wa').value = '';
+  document.getElementById('o-msg').value = '';
+  var btn = document.getElementById('btn-submit');
+  btn.classList.remove('loading');
+  btn.disabled = false;
   document.getElementById('modal').classList.add('on');
+  setTimeout(function(){document.getElementById('o-name').focus();}, 350);
 }
-function cm(){document.getElementById('modal').classList.remove('on')}
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)cm()});
 
-function sub(){
-  var n=document.getElementById('o-name').value.trim();
-  var d=document.getElementById('o-pd').value.trim();
-  var w=document.getElementById('o-wa').value.trim();
-  var g=document.getElementById('o-game').value;
-  var p=document.getElementById('o-pack').value;
-  var pr=document.getElementById('mpp').textContent;
-  if(!n){alert('Please enter your name.');return;}
-  if(!d){alert('Please enter your player details.');return;}
-  if(!w){alert('Please enter your WhatsApp number.');return;}
+function getPlayerHint(label){
+  if(label.indexOf('UID') !== -1 && label.indexOf('Username') !== -1) return 'Enter your Free Fire UID and Username';
+  if(label.indexOf('Player Tag') !== -1) return 'Example: #ABC123XYZ (from your profile)';
+  if(label.indexOf('User ID') !== -1 && label.indexOf('Server ID') !== -1) return 'Find in your MLBB profile screen';
+  return 'Enter the required player details';
+}
 
-  /* ── SAVE ORDER TO LOCALSTORAGE ── */
-  var orders=JSON.parse(localStorage.getItem('gaida_orders')||'[]');
-  var now=new Date();
-  var ts=now.toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'})
-    +' '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
-  orders.push({
-    id: Date.now(),
-    name: n,
-    game: g,
-    pack: p,
-    price: pr,
-    playerDetails: d,
-    whatsapp: w,
-    time: ts,
-    status: 'new'
+function closeModal(){document.getElementById('modal').classList.remove('on');}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+function submitOrder(){
+  var name = document.getElementById('o-name').value.trim();
+  var wa   = document.getElementById('o-wa').value.trim();
+  var det  = document.getElementById('o-pd').value.trim();
+  var msg  = document.getElementById('o-msg').value.trim();
+  var game = currentOrder.game;
+  var pack = currentOrder.pack;
+  var price = currentOrder.price;
+
+  // Validate
+  if(!name){showFieldError('o-name','Please enter your full name.');return;}
+  if(!wa){showFieldError('o-wa','Please enter your WhatsApp number.');return;}
+  if(!det){showFieldError('o-pd','Please enter your player details.');return;}
+
+  // Loading state
+  var btn = document.getElementById('btn-submit');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  // Build WhatsApp message
+  var waMsg = 'Hello GAIDA TOPUP 👋\n'
+    + 'I want to order:\n\n'
+    + '🎮 *Game:* ' + game + '\n'
+    + '📦 *Pack:* ' + pack + '\n'
+    + '💰 *Price:* ' + price + '\n'
+    + '🆔 *Player Details:* ' + det + '\n'
+    + '👤 *Customer Name:* ' + name + '\n'
+    + '📱 *My WhatsApp:* ' + wa
+    + (msg ? '\n💬 *Note:* ' + msg : '')
+    + '\n\n_Sent via GAIDA TOPUP website_';
+
+  var waUrl = 'https://wa.me/' + OWNER_WA + '?text=' + encodeURIComponent(waMsg);
+
+  // Save to local log
+  saveOrderLocal({
+    id: Date.now(), name:name, whatsapp:wa, game:game, pack:pack,
+    price:price, playerDetails:det, note:msg,
+    time: formatTime(), status:'new'
   });
-  localStorage.setItem('gaida_orders', JSON.stringify(orders));
 
-  cm();
-  var t=document.getElementById('toast');
-  t.classList.add('on');
-  setTimeout(function(){t.classList.remove('on');},4500);
+  // Brief delay for loading feel, then open WA
+  setTimeout(function(){
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    closeModal();
+    window.open(waUrl, '_blank');
+    showToast('Request Sent Successfully! 🎉', 'WhatsApp opened. Admin will confirm shortly.', false);
+  }, 900);
 }
 
-/* ── CHAT / REVIEWS ── */
-function eh(s){
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function showFieldError(id, msg){
+  var el = document.getElementById(id);
+  el.style.borderColor = 'var(--red)';
+  el.style.boxShadow = '0 0 10px rgba(255,68,68,.2)';
+  el.focus();
+  setTimeout(function(){el.style.borderColor='';el.style.boxShadow='';}, 2500);
+  showToast('Missing Field', msg, true);
 }
-function loadChats(){
-  var msgs=JSON.parse(localStorage.getItem('gaida_chats')||'[]');
-  renderChats(msgs);
+
+function formatTime(){
+  var now = new Date();
+  return now.toLocaleDateString('en-US',{day:'2-digit',month:'short',year:'numeric'})
+    + ' ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
 }
+
+/* ── CHAT ── */
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function loadChats(){var msgs=[];try{msgs=JSON.parse(localStorage.getItem('gaida_chats')||'[]');}catch(e){}renderChats(msgs);}
 function renderChats(msgs){
-  var board=document.getElementById('cboard');
-  if(!msgs.length){
-    board.innerHTML='<div class="no-msg">No messages yet. Be the first to review! 🎮</div>';
-    return;
-  }
+  var b=document.getElementById('cboard');
+  if(!msgs.length){b.innerHTML='<div class="no-msg">No messages yet. Be the first to review! 🎮</div>';return;}
   var h='';
-  msgs.slice().reverse().forEach(function(m){
-    h+='<div class="cmsg"><div class="cmsg-hd"><span class="cmsg-name">👤 '+eh(m.name)+'</span>'
-      +'<span class="cmsg-time">'+m.time+'</span></div>'
-      +'<div class="cmsg-body">'+eh(m.msg)+'</div></div>';
-  });
-  board.innerHTML=h;
+  msgs.slice().reverse().forEach(function(m){h+='<div class="cmsg"><div class="cmsg-hd"><span class="cmsg-name">👤 '+escHtml(m.name)+'</span><span class="cmsg-time">'+escHtml(m.time)+'</span></div><div class="cmsg-body">'+escHtml(m.msg)+'</div></div>';});
+  b.innerHTML=h;
 }
-function sc(){
-  var n=document.getElementById('cname').value.trim();
-  var m=document.getElementById('cmsg').value.trim();
-  if(!n){alert('Please enter your name!');return;}
-  if(!m){alert('Please write a message!');return;}
-  var msgs=JSON.parse(localStorage.getItem('gaida_chats')||'[]');
-  var now=new Date();
-  var ts=now.toLocaleDateString('en-US',{day:'2-digit',month:'short'})
-    +' '+now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
-  msgs.push({name:n,msg:m,time:ts});
+function sendChat(){
+  var name=document.getElementById('cname').value.trim();
+  var msg=document.getElementById('cmsg').value.trim();
+  if(!name){showToast('Missing Name','Please enter your name to post a review.',true);return;}
+  if(!msg){showToast('Empty Message','Please write something before posting.',true);return;}
+  var msgs=[];try{msgs=JSON.parse(localStorage.getItem('gaida_chats')||'[]');}catch(e){}
+  msgs.push({name:name,msg:msg,time:formatTime()});
   if(msgs.length>100)msgs.shift();
-  localStorage.setItem('gaida_chats',JSON.stringify(msgs));
+  try{localStorage.setItem('gaida_chats',JSON.stringify(msgs));}catch(e){}
   document.getElementById('cmsg').value='';
   renderChats(msgs);
 }
 loadChats();
 
-/* ── SCROLL-IN ANIMATION ── */
-var obs=new IntersectionObserver(function(entries){
+/* ── SCROLL ANIMATIONS ── */
+var observer = new IntersectionObserver(function(entries){
   entries.forEach(function(e){
-    if(e.isIntersecting){
-      e.target.style.opacity='1';
-      e.target.style.transform='translateY(0)';
-    }
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';observer.unobserve(e.target);}
   });
-},{threshold:.1});
+},{threshold:.08});
+var mob2=window.innerWidth<768;
 document.querySelectorAll('.step,.pcard').forEach(function(el){
-  el.style.opacity='0';
-  el.style.transform='translateY(22px)';
-  el.style.transition='opacity .5s ease,transform .5s ease';
-  obs.observe(el);
+  el.style.opacity='0';el.style.transform='translateY('+(mob2?'12px':'18px')+')';
+  el.style.transition='opacity '+(mob2?'.3s':'.42s')+' ease,transform '+(mob2?'.3s':'.42s')+' ease';
+  observer.observe(el);
 });
 
-/* ══════════════════════════════════════
-   ADMIN PANEL
-══════════════════════════════════════ */
-var ADMIN_PASSWORD = 'gaida2025'; // ← Change this to your own password
+/* ── ADMIN ── */
+function saveOrderLocal(o){
+  var orders=[];try{orders=JSON.parse(localStorage.getItem('gaida_orders')||'[]');}catch(e){}
+  orders.push(o);
+  try{localStorage.setItem('gaida_orders',JSON.stringify(orders));}catch(e){}
+}
+function getOrders(){try{return JSON.parse(localStorage.getItem('gaida_orders')||'[]');}catch(e){return[];}}
+function saveOrders(o){try{localStorage.setItem('gaida_orders',JSON.stringify(o));}catch(e){}}
 
 function openAdmin(){
   document.getElementById('adminPwd').value='';
@@ -1042,22 +890,18 @@ function openAdmin(){
   document.getElementById('adminLogin').style.display='block';
   document.getElementById('adminDash').style.display='none';
   document.getElementById('adminOv').classList.add('on');
-  setTimeout(function(){document.getElementById('adminPwd').focus();},200);
+  setTimeout(function(){document.getElementById('adminPwd').focus();},260);
 }
+function closeAdmin(){document.getElementById('adminOv').classList.remove('on');}
+document.getElementById('adminOv').addEventListener('click',function(e){if(e.target===this)closeAdmin();});
+document.getElementById('adminPwd').addEventListener('keydown',function(e){if(e.key==='Enter')doAdminLogin();});
 
-function closeAdmin(){
-  document.getElementById('adminOv').classList.remove('on');
-}
-
-document.getElementById('adminOv').addEventListener('click',function(e){
-  if(e.target===this) closeAdmin();
-});
-
-function adminLogin(){
-  var pwd=document.getElementById('adminPwd').value;
-  if(pwd===ADMIN_PASSWORD){
+function doAdminLogin(){
+  if(document.getElementById('adminPwd').value===ADMIN_PASS){
     document.getElementById('adminLogin').style.display='none';
     document.getElementById('adminDash').style.display='flex';
+    curFilter='all';
+    document.querySelectorAll('.afilter').forEach(function(b,i){b.classList.toggle('on',i===0);});
     renderOrders();
   } else {
     document.getElementById('adminErr').style.display='block';
@@ -1065,77 +909,67 @@ function adminLogin(){
     document.getElementById('adminPwd').focus();
   }
 }
-
+function setFilter(btn,f){
+  curFilter=f;
+  document.querySelectorAll('.afilter').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');renderOrders();
+}
 function renderOrders(){
-  var orders=JSON.parse(localStorage.getItem('gaida_orders')||'[]');
+  var all=getOrders();
+  var fil=all.filter(function(o){return curFilter==='new'?o.status!=='done':curFilter==='done'?o.status==='done':true;});
+  document.getElementById('orderCount').textContent=all.length+' order'+(all.length!==1?'s':'');
   var list=document.getElementById('orderList');
-  var count=document.getElementById('orderCount');
-  count.textContent=orders.length+' order'+(orders.length!==1?'s':'');
-
-  if(!orders.length){
-    list.innerHTML='<div class="order-empty"><div class="order-empty-ico">📭</div>'
-      +'<div class="order-empty-txt">No orders yet. When customers submit requests, they will appear here.</div></div>';
+  if(!fil.length){
+    list.innerHTML='<div class="order-empty"><div class="order-empty-ico">'+(all.length?'🔍':'📭')+'</div><div style="color:var(--muted);font-size:.92rem">'+(all.length?'No orders match this filter.':'No orders yet.')+'</div></div>';
     return;
   }
-
   var h='<div class="order-grid">';
-  var reversed=orders.slice().reverse();
-  reversed.forEach(function(o,i){
-    var initials=o.name.trim().split(' ').map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2)||'??';
+  fil.slice().reverse().forEach(function(o){
+    var ini=o.name.trim().split(/\s+/).map(function(w){return w[0]||'';}).join('').toUpperCase().slice(0,2)||'??';
     var waNum=o.whatsapp.replace(/[^0-9]/g,'');
-    var waLink='https://wa.me/'+waNum+'?text='+encodeURIComponent(
-      'Hello '+o.name+'! 👋 This is GAIDA TOPUP admin. Your order request for *'+o.pack+'* ('+o.game+') at *'+o.price+'* has been received. Please confirm to proceed. 🎮'
-    );
-    var statusClass=o.status==='done'?'status-done':'status-new';
-    var statusLabel=o.status==='done'?'✅ Done':'🆕 New';
-
-    h+='<div class="order-card" id="oc-'+o.id+'">';
-    h+='<div class="order-card-num">#'+(orders.length-i)+'</div>';
-    h+='<div class="order-card-top">';
-    h+='<div class="order-avatar">'+initials+'</div>';
-    h+='<div><div class="order-name">'+eh(o.name)+'</div><div class="order-time">'+o.time+'</div></div>';
-    h+='<div class="order-status '+statusClass+'">'+statusLabel+'</div>';
-    h+='</div>';
-    h+='<div class="order-row"><span class="order-label">📱 WhatsApp</span><span class="order-val wa">'+eh(o.whatsapp)+'</span></div>';
-    h+='<div class="order-row"><span class="order-label">🎮 Game</span><span class="order-val game">'+eh(o.game)+'</span></div>';
-    h+='<div class="order-row"><span class="order-label">📦 Pack</span><span class="order-val">'+eh(o.pack)+'</span></div>';
-    h+='<div class="order-row"><span class="order-label">💰 Price</span><span class="order-val price">'+eh(o.price)+'</span></div>';
-    h+='<div class="order-row"><span class="order-label">🆔 Details</span><span class="order-val">'+eh(o.playerDetails)+'</span></div>';
+    var waLink='https://wa.me/'+waNum+'?text='+encodeURIComponent('Hello '+o.name+'! 👋 This is GAIDA TOPUP. Your order for *'+o.pack+'* ('+o.game+') at *'+o.price+'* has been received. Please confirm to proceed. 🎮');
+    var done=o.status==='done';
+    var num=all.length-all.indexOf(o);
+    h+='<div class="order-card">';
+    h+='<div class="order-card-num">#'+num+'</div>';
+    h+='<div class="order-card-top"><div class="order-avatar">'+escHtml(ini)+'</div><div><div class="order-name">'+escHtml(o.name)+'</div><div class="order-time">'+escHtml(o.time)+'</div></div><div class="order-status '+(done?'status-done':'status-new')+'">'+(done?'✅ Done':'🆕 New')+'</div></div>';
+    h+='<div class="order-row"><span class="order-label">📱 WA</span><span class="order-val wa">'+escHtml(o.whatsapp)+'</span></div>';
+    h+='<div class="order-row"><span class="order-label">🎮 Game</span><span class="order-val game">'+escHtml(o.game)+'</span></div>';
+    h+='<div class="order-row"><span class="order-label">📦 Pack</span><span class="order-val">'+escHtml(o.pack)+'</span></div>';
+    h+='<div class="order-row"><span class="order-label">💰 Price</span><span class="order-val price">'+escHtml(o.price)+'</span></div>';
+    h+='<div class="order-row"><span class="order-label">🆔 Details</span><span class="order-val">'+escHtml(o.playerDetails)+'</span></div>';
+    if(o.note)h+='<div class="order-row"><span class="order-label">💬 Note</span><span class="order-val">'+escHtml(o.note)+'</span></div>';
     h+='<div class="order-card-actions">';
-    h+='<a href="'+waLink+'" target="_blank" class="btn-wa">💬 WhatsApp</a>';
-    if(o.status!=='done'){
-      h+='<button class="btn-wa" style="background:linear-gradient(135deg,var(--green),#00b360)" onclick="markDone('+o.id+')">✅ Mark Done</button>';
-    }
-    h+='<button class="btn-del-order" onclick="deleteOrder('+o.id+')">🗑 Delete</button>';
-    h+='</div>';
-    h+='</div>';
+    h+='<a href="'+waLink+'" target="_blank" rel="noopener" class="btn-wa-card">💬 WhatsApp</a>';
+    if(!done){h+='<button class="btn-done" onclick="markDone('+o.id+')">✅ Done</button>';}
+    else{h+='<button class="btn-reopen" onclick="markNew('+o.id+')">↩️ Reopen</button>';}
+    h+='<button class="btn-del" onclick="deleteOrder('+o.id+')">🗑</button>';
+    h+='</div></div>';
   });
   h+='</div>';
   list.innerHTML=h;
 }
+function markDone(id){saveOrders(getOrders().map(function(r){if(r.id===id)r.status='done';return r;}));renderOrders();}
+function markNew(id){saveOrders(getOrders().map(function(r){if(r.id===id)r.status='new';return r;}));renderOrders();}
+function deleteOrder(id){if(!confirm('Delete this order?'))return;saveOrders(getOrders().filter(function(r){return r.id!==id;}));renderOrders();}
+function clearAllOrders(){if(!confirm('Clear ALL orders? This cannot be undone.'))return;localStorage.removeItem('gaida_orders');renderOrders();}
 
-function markDone(id){
-  var orders=JSON.parse(localStorage.getItem('gaida_orders')||'[]');
-  orders=orders.map(function(o){
-    if(o.id===id) o.status='done';
-    return o;
+function exportOrders(){
+  var orders=getOrders();
+  if(!orders.length){showToast('No Orders','No orders to export.',true);return;}
+  var lines=['GAIDA TOPUP — Order Export','Generated: '+new Date().toLocaleString(),'Total: '+orders.length+' order(s)','═══════════════════════════════'];
+  orders.slice().reverse().forEach(function(o,i){
+    lines.push('','Order #'+(orders.length-i)+' ['+o.status.toUpperCase()+']','Name     : '+o.name,'WhatsApp : '+o.whatsapp,'Game     : '+o.game,'Pack     : '+o.pack,'Price    : '+o.price,'Details  : '+o.playerDetails,(o.note?'Note     : '+o.note:''),'Time     : '+o.time,'───────────────────────────────');
   });
-  localStorage.setItem('gaida_orders',JSON.stringify(orders));
-  renderOrders();
+  document.getElementById('exportTxt').value=lines.filter(function(l){return l!=='';}).join('\n');
+  document.getElementById('exportPop').classList.add('on');
 }
-
-function deleteOrder(id){
-  if(!confirm('Delete this order request?')) return;
-  var orders=JSON.parse(localStorage.getItem('gaida_orders')||'[]');
-  orders=orders.filter(function(o){return o.id!==id;});
-  localStorage.setItem('gaida_orders',JSON.stringify(orders));
-  renderOrders();
-}
-
-function clearAllOrders(){
-  if(!confirm('Clear ALL order requests? This cannot be undone.')) return;
-  localStorage.removeItem('gaida_orders');
-  renderOrders();
+function copyExport(btn){
+  var ta=document.getElementById('exportTxt');
+  ta.select();ta.setSelectionRange(0,99999);
+  var ok=false;try{ok=document.execCommand('copy');}catch(e){}
+  if(!ok&&navigator.clipboard){navigator.clipboard.writeText(ta.value);}
+  if(btn){btn.textContent='✅ Copied!';setTimeout(function(){btn.textContent='📋 Copy All';},2000);}
 }
 </script>
 </body>
